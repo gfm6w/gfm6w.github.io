@@ -82,7 +82,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-4c11d9c02471666671d1ce5a25028114.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-7e891a3c181cf25477291a2af3a027c1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-47f533d445c58ed2fec2571aaf406ec5.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -114,6 +114,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
 
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<script src="assets/js/svg-pan-zoom.min.js"></script>
 
 
 <link rel="stylesheet" href="theme/fonts.css">
@@ -307,7 +308,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="powsybl-in-a-few-lines" class="level2">
 <h2 class="anchored" data-anchor-id="powsybl-in-a-few-lines">PowSyBl in a few lines</h2>
 <p>The IEEE 14-bus case used throughout the dynamic parts ships as an XIIDM file, the native PowSyBl format.</p>
-<div id="73e4f8c3" class="cell" data-execution_count="2">
+<div id="8d90366e" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pypowsybl <span class="im">as</span> pp</span>
@@ -385,7 +386,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Every element type is a pandas DataFrame, and every attribute can be updated in place. A load flow with OpenLoadFlow fills in the voltages and the flows.</p>
-<div id="cf52ee8e" class="cell" data-execution_count="3">
+<div id="0d976b22" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> pp.loadflow.run_ac(network)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result[<span class="dv">0</span>].status_text, <span class="st">"in"</span>, result[<span class="dv">0</span>].iteration_count, <span class="st">"iterations"</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>network.get_buses()[[<span class="st">"v_mag"</span>, <span class="st">"v_angle"</span>]].<span class="bu">round</span>(<span class="dv">2</span>).T</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -456,23 +457,589 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>PowSyBl also draws the grid. The network area diagram shows each voltage level with its flows.</p>
-<div id="577b3e36" class="cell" data-execution_count="4">
+<div id="cfa30913" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>network.get_network_area_diagram()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="f5b84359" class="cell" data-execution_count="5">
+<div id="0c44d8b1" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-display" data-execution_count="4">
-<div>
-<figure class="figure">
-<p><img src="01-powsybl-dynawo_files/figure-html/cell-6-output-1.svg" class="img-fluid figure-img"></p>
-</figure>
+
+<div style="height:560px;border:1px solid #e3e8ee;border-radius:6px;overflow:hidden">
+<svg id="zoom-978ecd41" width="100%" height="100%" viewbox="-922.61 -682.64 2039.63 1724.02" xmlns="http://www.w3.org/2000/svg">
+    <style>.nad-branch-edges .nad-edge-path, .nad-3wt-edges .nad-edge-path {stroke: var(--nad-vl-color, lightgrey); stroke-width: 5; fill: none}
+.nad-branch-edges .nad-winding, .nad-3wt-nodes .nad-winding {stroke: var(--nad-vl-color, lightgrey); stroke-width: 5; fill: none}
+.nad-text-edges {stroke: black; stroke-width: 3; stroke-dasharray: 6,7; fill: none}
+.nad-disconnected.nad-edge-path {stroke-dasharray: 10,10}
+.nad-injections .nad-disconnected .nad-edge-path, .nad-injections .nad-disconnected circle {stroke: lightgrey}
+.nad-injections .nad-edge-path {stroke: var(--nad-vl-color, lightgrey); stroke-width: 3; fill: none}
+.nad-injections circle {stroke: var(--nad-vl-color, lightgrey); stroke-width: 3; fill: none}
+.nad-vl-nodes .nad-busnode {fill: var(--nad-vl-color, lightgrey)}
+.nad-vl-nodes circle.nad-unknown-busnode {stroke: var(--nad-vl-color, #808080); stroke-width: 5; stroke-dasharray: 5,5; fill: none}
+.nad-hvdc-edge polyline.nad-hvdc {stroke: grey; stroke-width: 40}
+.nad-branch-edges .nad-tie-line-edge .nad-edge-path {stroke-width: 7}
+.nad-pst-arrow {stroke: #6a6a6a; stroke-width: 4; stroke-linecap: round; fill: none}
+.nad-active {fill: #546e7a}
+.nad-reactive {fill: #0277bd}
+.nad-current {fill: #bd4802}
+.nad-text-background {flood-color: #90a4aeaa}
+.nad-text-nodes {font: 25px serif; fill: black; dominant-baseline: central}
+.nad-text-nodes foreignObject {overflow: visible; color: black}
+.nad-label-box {background-color: #6c6c6c20; width: max-content; padding: 10px; border-radius: 10px;}
+.nad-legend-square {display: inline-block; margin-right: 10px; width: 20px; height: 20px; background: var(--nad-vl-color, black);}
+.nad-edge-infos text, .nad-edge-label text {font: 20px serif; dominant-baseline:middle; stroke: #FFFFFFAA; stroke-width: 10; stroke-linejoin:round; paint-order: stroke}
+.nad-disconnected {--nad-vl-color: #808080}
+:is(.nad-branch-edges, .nad-3wt-edges, .nad-3wt-nodes) .nad-vl0to30 {--nad-vl-color: #afb42b}
+.nad-vl0to30 .nad-bus-0 {--nad-vl-color: #827717}
+.nad-vl0to30 .nad-bus-1 {--nad-vl-color: #d4e157}
+.nad-vl0to30 .nad-bus-2 {--nad-vl-color: #e6ee9c}
+.nad-vl0to30 .nad-bus-3 {--nad-vl-color: #c0ca33}
+.nad-vl0to30 .nad-bus-4 {--nad-vl-color: #f0fc83}
+.nad-vl0to30 .nad-bus-5 {--nad-vl-color: #9e9d24}
+.nad-vl0to30 .nad-bus-6 {--nad-vl-color: #cddc39}
+.nad-vl0to30 .nad-bus-7 {--nad-vl-color: #dce775}
+.nad-vl0to30 .nad-bus-8 {--nad-vl-color: #ddfc88}
+:is(.nad-branch-edges, .nad-3wt-edges, .nad-3wt-nodes) .nad-vl30to50 {--nad-vl-color: #ef9a9a}
+.nad-vl30to50 .nad-bus-0 {--nad-vl-color: #c2185b}
+.nad-vl30to50 .nad-bus-1 {--nad-vl-color: #f06292}
+.nad-vl30to50 .nad-bus-2 {--nad-vl-color: #d81b60}
+.nad-vl30to50 .nad-bus-3 {--nad-vl-color: #ec407a}
+.nad-vl30to50 .nad-bus-4 {--nad-vl-color: #880e4f}
+.nad-vl30to50 .nad-bus-5 {--nad-vl-color: #ad1457}
+.nad-vl30to50 .nad-bus-6 {--nad-vl-color: #e91e63}
+.nad-vl30to50 .nad-bus-7 {--nad-vl-color: #f48fb1}
+.nad-vl30to50 .nad-bus-8 {--nad-vl-color: #f8bbd0}
+:is(.nad-branch-edges, .nad-3wt-edges, .nad-3wt-nodes) .nad-vl50to70 {--nad-vl-color: #9c27b0}
+.nad-vl50to70 .nad-bus-0 {--nad-vl-color: #7b1fa2}
+.nad-vl50to70 .nad-bus-1 {--nad-vl-color: #ba68c8}
+.nad-vl50to70 .nad-bus-2 {--nad-vl-color: #512da8}
+.nad-vl50to70 .nad-bus-3 {--nad-vl-color: #ab47bc}
+.nad-vl50to70 .nad-bus-4 {--nad-vl-color: #e1bee7}
+.nad-vl50to70 .nad-bus-5 {--nad-vl-color: #6a1b9a}
+.nad-vl50to70 .nad-bus-6 {--nad-vl-color: #4a148c}
+.nad-vl50to70 .nad-bus-7 {--nad-vl-color: #ce93d8}
+.nad-vl50to70 .nad-bus-8 {--nad-vl-color: #9575cd}
+:is(.nad-branch-edges, .nad-3wt-edges, .nad-3wt-nodes) .nad-vl70to120 {--nad-vl-color: #e65100}
+.nad-vl70to120 .nad-bus-0 {--nad-vl-color: #fb8c00}
+.nad-vl70to120 .nad-bus-1 {--nad-vl-color: #ffb74d}
+.nad-vl70to120 .nad-bus-2 {--nad-vl-color: #f57c00}
+.nad-vl70to120 .nad-bus-3 {--nad-vl-color: #ffa726}
+.nad-vl70to120 .nad-bus-4 {--nad-vl-color: #ffe0b2}
+.nad-vl70to120 .nad-bus-5 {--nad-vl-color: #ef6c00}
+.nad-vl70to120 .nad-bus-6 {--nad-vl-color: #ff9800}
+.nad-vl70to120 .nad-bus-7 {--nad-vl-color: #ffcc80}
+.nad-vl70to120 .nad-bus-8 {--nad-vl-color: #fff3e0}
+:is(.nad-branch-edges, .nad-3wt-edges, .nad-3wt-nodes) .nad-vl120to180 {--nad-vl-color: #00ACC1}
+.nad-vl120to180 .nad-bus-0 {--nad-vl-color: #4fc3f7}
+.nad-vl120to180 .nad-bus-1 {--nad-vl-color: #01579b}
+.nad-vl120to180 .nad-bus-2 {--nad-vl-color: #b3e5fc}
+.nad-vl120to180 .nad-bus-3 {--nad-vl-color: #039be5}
+.nad-vl120to180 .nad-bus-4 {--nad-vl-color: #81d4fa}
+.nad-vl120to180 .nad-bus-5 {--nad-vl-color: #0288d1}
+.nad-vl120to180 .nad-bus-6 {--nad-vl-color: #29b6f6}
+.nad-vl120to180 .nad-bus-7 {--nad-vl-color: #0277bd}
+.nad-vl120to180 .nad-bus-8 {--nad-vl-color: #03a9f4}
+:is(.nad-branch-edges, .nad-3wt-edges, .nad-3wt-nodes) .nad-vl180to300 {--nad-vl-color: #2e7d32}
+.nad-vl180to300 .nad-bus-0 {--nad-vl-color: #81c784}
+.nad-vl180to300 .nad-bus-1 {--nad-vl-color: #558b2f}
+.nad-vl180to300 .nad-bus-2 {--nad-vl-color: #c8e6c9}
+.nad-vl180to300 .nad-bus-3 {--nad-vl-color: #43a047}
+.nad-vl180to300 .nad-bus-4 {--nad-vl-color: #a5d6a7}
+.nad-vl180to300 .nad-bus-5 {--nad-vl-color: #388e3c}
+.nad-vl180to300 .nad-bus-6 {--nad-vl-color: #66bb6a}
+.nad-vl180to300 .nad-bus-7 {--nad-vl-color: #1b5e20}
+.nad-vl180to300 .nad-bus-8 {--nad-vl-color: #4caf50}
+:is(.nad-branch-edges, .nad-3wt-edges, .nad-3wt-nodes) .nad-vl300to500 {--nad-vl-color: #d32f2f}
+.nad-vl300to500 .nad-bus-0 {--nad-vl-color: #ef5350}
+.nad-vl300to500 .nad-bus-1 {--nad-vl-color: #ef9a9a}
+.nad-vl300to500 .nad-bus-2 {--nad-vl-color: #b71c1c}
+.nad-vl300to500 .nad-bus-3 {--nad-vl-color: #e57373}
+.nad-vl300to500 .nad-bus-4 {--nad-vl-color: #e53935}
+.nad-vl300to500 .nad-bus-5 {--nad-vl-color: #ff8a80}
+.nad-vl300to500 .nad-bus-6 {--nad-vl-color: #f44336}
+.nad-vl300to500 .nad-bus-7 {--nad-vl-color: #ffcdd2}
+.nad-vl300to500 .nad-bus-8 {--nad-vl-color: #c62828}
+.nad-branch-edges .nad-overload .nad-edge-path {animation: line-blink 3s infinite}
+.nad-vl-nodes .nad-overvoltage {animation: node-over-blink 3s infinite}
+.nad-vl-nodes .nad-undervoltage {animation: node-under-blink 3s infinite}
+.nad-highlight {stroke-width: 25; opacity: 0.2; fill: none;}
+.nad-highlight-0 {stroke: #e6e600;}
+.nad-highlight-1 {stroke: #b300b3;}
+.nad-highlight-2 {stroke: #2eb82e;}
+.nad-highlight-3 {stroke: #e67300;}
+.nad-highlight-4 {stroke: #0000ff;}
+@keyframes line-blink {
+  0%, 80%, 100% {stroke: var(--nad-vl-color, black); stroke-width: 5}
+  40% {stroke: #FFEB3B; stroke-width: 15}
+}
+@keyframes node-over-blink {
+  0%, 80%, 100% {stroke: white; stroke-width: 0}
+  40% {stroke: #ff5722; stroke-width: 15}
+}
+@keyframes node-under-blink {
+  0%, 80%, 100% {stroke: white; stroke-width: 0}
+  40% {stroke: #00BCD4; stroke-width: 15}
+}
+.nad-load {stroke: var(--nad-vl-color, lightgrey); stroke-width: 3; fill: none}
+.nad-battery {stroke: var(--nad-vl-color, lightgrey); stroke-width: 3; fill: none}
+.nad-generator {stroke: var(--nad-vl-color, lightgrey); stroke-width: 3; stroke-linecap: round; fill: none}
+.nad-capacitor {stroke: var(--nad-vl-color, lightgrey); stroke-width: 3; fill: none}
+.nad-inductor {stroke: var(--nad-vl-color, lightgrey); stroke-width: 3; stroke-linejoin: round; stroke-linecap: round; fill: none}
+.nad-svc {stroke: var(--nad-vl-color, lightgrey); stroke-width: 3; stroke-linejoin:round; fill: none}
+.nad-lcc {stroke: var(--nad-vl-color, lightgrey); stroke-width: 3; stroke-linecap:round; fill: none}
+.nad-vsc {stroke: var(--nad-vl-color, lightgrey); stroke-width: 3; stroke-linecap:round; fill: none}
+.nad-disconnected .nad-load {stroke: lightgrey}
+.nad-disconnected .nad-battery {stroke: lightgrey}
+.nad-disconnected .nad-generator {stroke: lightgrey}
+.nad-disconnected .nad-capacitor {stroke: lightgrey}
+.nad-disconnected .nad-inductor {stroke: lightgrey}
+.nad-disconnected .nad-svc {stroke: lightgrey}
+.nad-unknown {stroke: none; fill: black}
+</style>
+    <g class="nad-vl-nodes">
+        <g transform="translate(62.31,-405.35)" id="0" class="nad-vl0to30">
+            <circle r="27.50" id="3" class="nad-bus-0 nad-busnode"></circle>
+        </g>
+        <g transform="translate(-359.97,-442.64)" id="4" class="nad-vl0to30">
+            <circle r="27.50" id="7" class="nad-bus-0 nad-busnode"></circle>
+        </g>
+        <g transform="translate(-722.61,-90.79)" id="8" class="nad-vl0to30">
+            <circle r="27.50" id="11" class="nad-bus-0 nad-busnode"></circle>
+        </g>
+        <g transform="translate(-516.40,-191.18)" id="12" class="nad-vl0to30">
+            <circle r="27.50" id="15" class="nad-bus-0 nad-busnode"></circle>
+        </g>
+        <g transform="translate(-107.58,-208.56)" id="16" class="nad-vl0to30">
+            <circle r="27.50" id="19" class="nad-bus-0 nad-busnode"></circle>
+        </g>
+        <g transform="translate(-201.61,841.38)" id="20" class="nad-vl50to70">
+            <circle r="27.50" id="23" class="nad-bus-0 nad-busnode"></circle>
+        </g>
+        <g transform="translate(50.35,785.72)" id="24" class="nad-vl50to70">
+            <circle r="27.50" id="27" class="nad-bus-0 nad-busnode"></circle>
+        </g>
+        <g transform="translate(298.45,763.86)" id="28" class="nad-vl50to70">
+            <circle r="27.50" id="31" class="nad-bus-0 nad-busnode"></circle>
+        </g>
+        <g transform="translate(280.02,451.19)" id="32" class="nad-vl50to70">
+            <circle r="27.50" id="35" class="nad-bus-0 nad-busnode"></circle>
+        </g>
+        <g transform="translate(-183.37,562.69)" id="36" class="nad-vl50to70">
+            <circle r="27.50" id="39" class="nad-bus-0 nad-busnode"></circle>
+        </g>
+        <g transform="translate(-504.41,25.65)" id="40" class="nad-vl0to30">
+            <circle r="27.50" id="43" class="nad-bus-0 nad-busnode"></circle>
+        </g>
+        <g transform="translate(576.29,130.46)" id="44" class="nad-vl0to30">
+            <circle r="27.50" id="47" class="nad-bus-0 nad-busnode"></circle>
+        </g>
+        <g transform="translate(817.02,92.86)" id="48" class="nad-vl0to30">
+            <circle r="27.50" id="51" class="nad-bus-0 nad-busnode"></circle>
+        </g>
+        <g transform="translate(285.81,-83.90)" id="52" class="nad-vl0to30">
+            <circle r="27.50" id="55" class="nad-bus-0 nad-busnode"></circle>
+        </g>
+    </g>
+    <g class="nad-branch-edges">
+        <g id="56">
+            <polyline class="nad-vl0to30 nad-edge-path" points="34.92,-407.77 -148.83,-423.99"></polyline>
+            <polyline class="nad-vl0to30 nad-edge-path" points="-332.58,-440.22 -148.83,-423.99"></polyline>
+        </g>
+        <g id="59">
+            <polyline class="nad-vl0to30 nad-edge-path" points="270.11,-106.48 174.06,-244.62"></polyline>
+            <polyline class="nad-vl0to30 nad-edge-path" points="78.01,-382.77 174.06,-244.62"></polyline>
+        </g>
+        <g id="62">
+            <polyline class="nad-vl0to30 nad-edge-path" points="-496.31,-0.62 -432.19,-208.49"></polyline>
+            <polyline class="nad-vl0to30 nad-edge-path" points="-368.07,-416.36 -432.19,-208.49"></polyline>
+        </g>
+        <g id="65">
+            <polyline class="nad-vl0to30 nad-edge-path" points="-697.89,-102.82 -619.51,-140.98"></polyline>
+            <polyline class="nad-vl0to30 nad-edge-path" points="-541.12,-179.14 -619.51,-140.98"></polyline>
+        </g>
+        <g id="68">
+            <polyline class="nad-vl0to30 nad-edge-path" points="-528.68,12.71 -613.51,-32.57"></polyline>
+            <polyline class="nad-vl0to30 nad-edge-path" points="-698.35,-77.84 -613.51,-32.57"></polyline>
+        </g>
+        <g id="71">
+            <polyline class="nad-vl0to30 nad-edge-path" points="-488.92,-192.35 -311.99,-199.87"></polyline>
+            <polyline class="nad-vl0to30 nad-edge-path" points="-135.05,-207.39 -311.99,-199.87"></polyline>
+        </g>
+        <g id="74">
+            <polyline class="nad-vl0to30 nad-edge-path" points="-505.93,-1.80 -510.41,-82.76"></polyline>
+            <polyline class="nad-vl0to30 nad-edge-path" points="-514.88,-163.72 -510.41,-82.76"></polyline>
+        </g>
+        <g id="77">
+            <polyline class="nad-vl0to30 nad-edge-path" points="259.59,-92.21 89.12,-146.23"></polyline>
+            <polyline class="nad-vl0to30 nad-edge-path" points="-81.36,-200.25 89.12,-146.23"></polyline>
+        </g>
+        <g id="80" class="nad-overload">
+            <polyline class="nad-vl50to70 nad-edge-path" points="-174.76,835.45 -75.63,813.55"></polyline>
+            <polyline class="nad-vl50to70 nad-edge-path" points="23.49,791.65 -75.63,813.55"></polyline>
+        </g>
+        <g id="83">
+            <polyline class="nad-vl50to70 nad-edge-path" points="-199.82,813.94 -192.49,702.03"></polyline>
+            <polyline class="nad-vl50to70 nad-edge-path" points="-185.17,590.13 -192.49,702.03"></polyline>
+        </g>
+        <g id="86">
+            <polyline class="nad-vl50to70 nad-edge-path" points="77.74,783.30 174.40,774.79"></polyline>
+            <polyline class="nad-vl50to70 nad-edge-path" points="271.06,766.27 174.40,774.79"></polyline>
+        </g>
+        <g id="89">
+            <polyline class="nad-vl50to70 nad-edge-path" points="65.91,763.05 165.18,618.46"></polyline>
+            <polyline class="nad-vl50to70 nad-edge-path" points="264.45,473.86 165.18,618.46"></polyline>
+        </g>
+        <g id="92">
+            <polyline class="nad-vl50to70 nad-edge-path" points="30.45,766.73 -66.51,674.20"></polyline>
+            <polyline class="nad-vl50to70 nad-edge-path" points="-163.48,581.67 -66.51,674.20"></polyline>
+        </g>
+        <g id="95">
+            <polyline class="nad-vl50to70 nad-edge-path" points="296.83,736.40 289.24,607.52"></polyline>
+            <polyline class="nad-vl50to70 nad-edge-path" points="281.64,478.64 289.24,607.52"></polyline>
+        </g>
+        <g id="98">
+            <polyline class="nad-vl50to70 nad-edge-path" points="253.28,457.63 48.32,506.94"></polyline>
+            <polyline class="nad-vl50to70 nad-edge-path" points="-156.63,556.26 48.32,506.94"></polyline>
+        </g>
+        <g id="101">
+            <polyline class="nad-vl50to70 nad-edge-path" points="298.68,430.99 407.80,312.86"></polyline>
+            <polyline class="nad-vl0to30 nad-edge-path" points="557.63,150.66 448.51,268.79"></polyline>
+            <g>
+                <circle class="nad-vl50to70 nad-winding" cx="421.37" cy="298.17" r="20.00"></circle>
+                <circle class="nad-vl0to30 nad-winding" cx="434.94" cy="283.48" r="20.00"></circle>
+            </g>
+        </g>
+        <g id="104">
+            <polyline class="nad-vl50to70 nad-edge-path" points="280.31,423.69 282.59,213.65"></polyline>
+            <polyline class="nad-vl0to30 nad-edge-path" points="285.51,-56.40 283.24,153.65"></polyline>
+            <g>
+                <circle class="nad-vl50to70 nad-winding" cx="282.80" cy="193.65" r="20.00"></circle>
+                <circle class="nad-vl0to30 nad-winding" cx="283.02" cy="173.65" r="20.00"></circle>
+            </g>
+        </g>
+        <g id="107">
+            <polyline class="nad-vl50to70 nad-edge-path" points="-197.48,539.09 -328.50,319.92"></polyline>
+            <polyline class="nad-vl0to30 nad-edge-path" points="-490.30,49.26 -359.29,268.42"></polyline>
+            <g>
+                <circle class="nad-vl50to70 nad-winding" cx="-338.76" cy="302.75" r="20.00"></circle>
+                <circle class="nad-vl0to30 nad-winding" cx="-349.02" cy="285.59" r="20.00"></circle>
+            </g>
+        </g>
+        <g id="110">
+            <polyline class="nad-vl0to30 nad-edge-path" points="603.46,126.22 696.66,111.66"></polyline>
+            <polyline class="nad-vl0to30 nad-edge-path" points="789.85,97.10 696.66,111.66"></polyline>
+        </g>
+        <g id="113">
+            <polyline class="nad-vl0to30 nad-edge-path" points="554.17,114.14 431.05,23.28"></polyline>
+            <polyline class="nad-vl0to30 nad-edge-path" points="307.94,-67.57 431.05,23.28"></polyline>
+        </g>
+    </g>
+    <g class="nad-edge-infos">
+        <g id="57" transform="translate(2.54,-410.62)">
+            <path transform="rotate(-84.95)" class="nad-active nad-arrow-in" d="M-10 -10 H10 L0 10z"></path>
+            <text transform="rotate(-354.95)" class="nad-active" x="-19.00" style="text-anchor:end">-4</text>
+        </g>
+        <g id="58" transform="translate(-300.20,-437.36)">
+            <path transform="rotate(95.05)" class="nad-active nad-arrow-out" d="M-10 10 H10 L0 -10z"></path>
+            <text transform="rotate(5.05)" class="nad-active" x="19.00">4</text>
+        </g>
+        <g id="60" transform="translate(251.56,-133.16)">
+            <path transform="rotate(-34.81)" class="nad-active nad-arrow-out" d="M-10 10 H10 L0 -10z"></path>
+            <text transform="rotate(-304.81)" class="nad-active" x="-19.00" style="text-anchor:end">5</text>
+        </g>
+        <g id="61" transform="translate(96.56,-356.08)">
+            <path transform="rotate(145.19)" class="nad-active nad-arrow-in" d="M-10 -10 H10 L0 10z"></path>
+            <text transform="rotate(55.19)" class="nad-active" x="19.00">-5</text>
+        </g>
+        <g id="63" transform="translate(-486.73,-31.68)">
+            <path transform="rotate(17.14)" class="nad-active nad-arrow-out" d="M-10 10 H10 L0 -10z"></path>
+            <text transform="rotate(-72.86)" class="nad-active" x="19.00">7</text>
+        </g>
+        <g id="64" transform="translate(-377.65,-385.30)">
+            <path transform="rotate(-162.86)" class="nad-active nad-arrow-in" d="M-10 -10 H10 L0 10z"></path>
+            <text transform="rotate(-72.86)" class="nad-active" x="-19.00" style="text-anchor:end">-7</text>
+        </g>
+        <g id="66" transform="translate(-668.67,-117.05)">
+            <path transform="rotate(64.04)" class="nad-active nad-arrow-out" d="M-10 10 H10 L0 -10z"></path>
+            <text transform="rotate(-25.96)" class="nad-active" x="19.00">2</text>
+        </g>
+        <g id="67" transform="translate(-570.34,-164.92)">
+            <path transform="rotate(-115.96)" class="nad-active nad-arrow-in" d="M-10 -10 H10 L0 10z"></path>
+            <text transform="rotate(-25.96)" class="nad-active" x="-19.00" style="text-anchor:end">-2</text>
+        </g>
+        <g id="69" transform="translate(-557.35,-2.59)">
+            <path transform="rotate(-61.91)" class="nad-active nad-arrow-out" d="M-10 10 H10 L0 -10z"></path>
+            <text transform="rotate(-331.91)" class="nad-active" x="-19.00" style="text-anchor:end">8</text>
+        </g>
+        <g id="70" transform="translate(-669.68,-62.54)">
+            <path transform="rotate(118.09)" class="nad-active nad-arrow-in" d="M-10 -10 H10 L0 10z"></path>
+            <text transform="rotate(28.09)" class="nad-active" x="19.00">-8</text>
+        </g>
+        <g id="72" transform="translate(-456.45,-193.73)">
+            <path transform="rotate(87.57)" class="nad-active nad-arrow-out" d="M-10 10 H10 L0 -10z"></path>
+            <text transform="rotate(-2.43)" class="nad-active" x="19.00">6</text>
+        </g>
+        <g id="73" transform="translate(-167.52,-206.01)">
+            <path transform="rotate(-92.43)" class="nad-active nad-arrow-in" d="M-10 -10 H10 L0 10z"></path>
+            <text transform="rotate(-2.43)" class="nad-active" x="-19.00" style="text-anchor:end">-6</text>
+        </g>
+        <g id="75" transform="translate(-507.72,-34.25)">
+            <path transform="rotate(-3.16)" class="nad-active nad-arrow-out" d="M-10 10 H10 L0 -10z"></path>
+            <text transform="rotate(-273.16)" class="nad-active" x="-19.00" style="text-anchor:end">18</text>
+        </g>
+        <g id="76" transform="translate(-513.09,-131.27)">
+            <path transform="rotate(176.84)" class="nad-active nad-arrow-in" d="M-10 -10 H10 L0 10z"></path>
+            <text transform="rotate(86.84)" class="nad-active" x="19.00">-18</text>
+        </g>
+        <g id="78" transform="translate(228.61,-102.02)">
+            <path transform="rotate(-72.42)" class="nad-active nad-arrow-out" d="M-10 10 H10 L0 -10z"></path>
+            <text transform="rotate(-342.42)" class="nad-active" x="-19.00" style="text-anchor:end">9</text>
+        </g>
+        <g id="79" transform="translate(-50.38,-190.43)">
+            <path transform="rotate(107.58)" class="nad-active nad-arrow-in" d="M-10 -10 H10 L0 10z"></path>
+            <text transform="rotate(17.58)" class="nad-active" x="19.00">-9</text>
+        </g>
+        <g id="81" transform="translate(-143.03,828.44)">
+            <path transform="rotate(77.54)" class="nad-active nad-arrow-out" d="M-10 10 H10 L0 -10z"></path>
+            <text transform="rotate(-12.46)" class="nad-active" x="19.00">157</text>
+        </g>
+        <g id="82" transform="translate(-8.24,798.66)">
+            <path transform="rotate(-102.46)" class="nad-active nad-arrow-in" d="M-10 -10 H10 L0 10z"></path>
+            <text transform="rotate(-12.46)" class="nad-active" x="-19.00" style="text-anchor:end">-153</text>
+        </g>
+        <g id="84" transform="translate(-197.69,781.51)">
+            <path transform="rotate(3.75)" class="nad-active nad-arrow-out" d="M-10 10 H10 L0 -10z"></path>
+            <text transform="rotate(-86.25)" class="nad-active" x="19.00">75</text>
+        </g>
+        <g id="85" transform="translate(-187.29,622.56)">
+            <path transform="rotate(-176.25)" class="nad-active nad-arrow-in" d="M-10 -10 H10 L0 10z"></path>
+            <text transform="rotate(-86.25)" class="nad-active" x="-19.00" style="text-anchor:end">-73</text>
+        </g>
+        <g id="87" transform="translate(110.11,780.45)">
+            <path transform="rotate(84.96)" class="nad-active nad-arrow-out" d="M-10 10 H10 L0 -10z"></path>
+            <text transform="rotate(-5.04)" class="nad-active" x="19.00">73</text>
+        </g>
+        <g id="88" transform="translate(238.69,769.12)">
+            <path transform="rotate(-95.04)" class="nad-active nad-arrow-in" d="M-10 -10 H10 L0 10z"></path>
+            <text transform="rotate(-5.04)" class="nad-active" x="-19.00" style="text-anchor:end">-71</text>
+        </g>
+        <g id="90" transform="translate(84.31,736.25)">
+            <path transform="rotate(34.47)" class="nad-active nad-arrow-out" d="M-10 10 H10 L0 -10z"></path>
+            <text transform="rotate(-55.53)" class="nad-active" x="19.00">56</text>
+        </g>
+        <g id="91" transform="translate(246.06,500.66)">
+            <path transform="rotate(-145.53)" class="nad-active nad-arrow-in" d="M-10 -10 H10 L0 10z"></path>
+            <text transform="rotate(-55.53)" class="nad-active" x="-19.00" style="text-anchor:end">-54</text>
+        </g>
+        <g id="93" transform="translate(6.94,744.30)">
+            <path transform="rotate(-46.34)" class="nad-active nad-arrow-out" d="M-10 10 H10 L0 -10z"></path>
+            <text transform="rotate(-316.34)" class="nad-active" x="-19.00" style="text-anchor:end">42</text>
+        </g>
+        <g id="94" transform="translate(-139.96,604.11)">
+            <path transform="rotate(133.66)" class="nad-active nad-arrow-in" d="M-10 -10 H10 L0 10z"></path>
+            <text transform="rotate(43.66)" class="nad-active" x="19.00">-41</text>
+        </g>
+        <g id="96" transform="translate(294.92,703.96)">
+            <path transform="rotate(-3.37)" class="nad-active nad-arrow-in" d="M-10 -10 H10 L0 10z"></path>
+            <text transform="rotate(-273.37)" class="nad-active" x="-19.00" style="text-anchor:end">-23</text>
+        </g>
+        <g id="97" transform="translate(283.55,511.09)">
+            <path transform="rotate(176.63)" class="nad-active nad-arrow-out" d="M-10 10 H10 L0 -10z"></path>
+            <text transform="rotate(86.63)" class="nad-active" x="19.00">24</text>
+        </g>
+        <g id="99" transform="translate(221.68,465.23)">
+            <path transform="rotate(-103.53)" class="nad-active nad-arrow-in" d="M-10 -10 H10 L0 10z"></path>
+            <text transform="rotate(-13.53)" class="nad-active" x="-19.00" style="text-anchor:end">-61</text>
+        </g>
+        <g id="100" transform="translate(-125.04,548.65)">
+            <path transform="rotate(76.47)" class="nad-active nad-arrow-out" d="M-10 10 H10 L0 -10z"></path>
+            <text transform="rotate(-13.53)" class="nad-active" x="19.00">62</text>
+        </g>
+        <g id="102" transform="translate(320.73,407.12)">
+            <path transform="rotate(42.73)" class="nad-active nad-arrow-out" d="M-10 10 H10 L0 -10z"></path>
+            <text transform="rotate(-47.27)" class="nad-active" x="19.00">28</text>
+        </g>
+        <g id="103" transform="translate(535.58,174.54)">
+            <path transform="rotate(-137.27)" class="nad-active nad-arrow-in" d="M-10 -10 H10 L0 10z"></path>
+            <text transform="rotate(-47.27)" class="nad-active" x="-19.00" style="text-anchor:end">-28</text>
+        </g>
+        <g id="105" transform="translate(280.67,391.20)">
+            <path transform="rotate(0.62)" class="nad-active nad-arrow-out" d="M-10 10 H10 L0 -10z"></path>
+            <text transform="rotate(-89.38)" class="nad-active" x="19.00">16</text>
+        </g>
+        <g id="106" transform="translate(285.16,-23.90)">
+            <path transform="rotate(-179.38)" class="nad-active nad-arrow-in" d="M-10 -10 H10 L0 10z"></path>
+            <text transform="rotate(-89.38)" class="nad-active" x="-19.00" style="text-anchor:end">-16</text>
+        </g>
+        <g id="108" transform="translate(-214.16,511.19)">
+            <path transform="rotate(-30.87)" class="nad-active nad-arrow-out" d="M-10 10 H10 L0 -10z"></path>
+            <text transform="rotate(-300.87)" class="nad-active" x="-19.00" style="text-anchor:end">44</text>
+        </g>
+        <g id="109" transform="translate(-473.63,77.15)">
+            <path transform="rotate(149.13)" class="nad-active nad-arrow-in" d="M-10 -10 H10 L0 10z"></path>
+            <text transform="rotate(59.13)" class="nad-active" x="19.00">-44</text>
+        </g>
+        <g id="111" transform="translate(635.57,121.20)">
+            <path transform="rotate(81.12)" class="nad-active nad-arrow-out" d="M-10 10 H10 L0 -10z"></path>
+            <text transform="rotate(-8.88)" class="nad-active" x="19.00">0</text>
+        </g>
+        <g id="112" transform="translate(757.74,102.12)">
+            <path transform="rotate(-98.88)" class="nad-active nad-arrow-out" d="M-10 10 H10 L0 -10z"></path>
+            <text transform="rotate(-8.88)" class="nad-active" x="-19.00" style="text-anchor:end">0</text>
+        </g>
+        <g id="114" transform="translate(528.01,94.84)">
+            <path transform="rotate(-53.57)" class="nad-active nad-arrow-out" d="M-10 10 H10 L0 -10z"></path>
+            <text transform="rotate(-323.57)" class="nad-active" x="-19.00" style="text-anchor:end">28</text>
+        </g>
+        <g id="115" transform="translate(334.09,-48.27)">
+            <path transform="rotate(126.43)" class="nad-active nad-arrow-in" d="M-10 -10 H10 L0 10z"></path>
+            <text transform="rotate(36.43)" class="nad-active" x="19.00">-28</text>
+        </g>
+    </g>
+    <g class="nad-text-edges">
+        <polyline id="2" points="91.98,-409.80 162.31,-420.35"></polyline>
+        <polyline id="6" points="-330.30,-447.09 -259.97,-457.64"></polyline>
+        <polyline id="10" points="-692.95,-95.24 -622.61,-105.79"></polyline>
+        <polyline id="14" points="-486.73,-195.63 -416.40,-206.18"></polyline>
+        <polyline id="18" points="-77.91,-213.01 -7.58,-223.56"></polyline>
+        <polyline id="22" points="-171.95,836.93 -101.61,826.38"></polyline>
+        <polyline id="26" points="80.01,781.27 150.35,770.72"></polyline>
+        <polyline id="30" points="328.12,759.41 398.45,748.86"></polyline>
+        <polyline id="34" points="309.69,446.74 380.02,436.19"></polyline>
+        <polyline id="38" points="-153.70,558.24 -83.37,547.69"></polyline>
+        <polyline id="42" points="-474.75,21.20 -404.41,10.65"></polyline>
+        <polyline id="46" points="605.96,126.01 676.29,115.46"></polyline>
+        <polyline id="50" points="846.69,88.41 917.02,77.86"></polyline>
+        <polyline id="54" points="315.48,-88.35 385.81,-98.90"></polyline>
+    </g>
+    <g class="nad-text-nodes">
+        <foreignobject id="1" y="-445.35" x="162.31" height="1" width="1">
+            <div xmlns="http://www.w3.org/1999/xhtml" class="nad-vl0to30 nad-label-box">
+                <div>BUS   10_VL</div>
+                <div class="nad-bus-descr">
+                    <span class="nad-bus-0 nad-legend-square"></span>14.5 kV / -4.8°</div>
+            </div>
+        </foreignobject>
+        <foreignobject id="5" y="-482.64" x="-259.97" height="1" width="1">
+            <div xmlns="http://www.w3.org/1999/xhtml" class="nad-vl0to30 nad-label-box">
+                <div>BUS   11_VL</div>
+                <div class="nad-bus-descr">
+                    <span class="nad-bus-0 nad-legend-square"></span>14.6 kV / -4.5°</div>
+            </div>
+        </foreignobject>
+        <foreignobject id="9" y="-130.79" x="-622.61" height="1" width="1">
+            <div xmlns="http://www.w3.org/1999/xhtml" class="nad-vl0to30 nad-label-box">
+                <div>BUS   12_VL</div>
+                <div class="nad-bus-descr">
+                    <span class="nad-bus-0 nad-legend-square"></span>14.6 kV / -4.8°</div>
+            </div>
+        </foreignobject>
+        <foreignobject id="13" y="-231.18" x="-416.40" height="1" width="1">
+            <div xmlns="http://www.w3.org/1999/xhtml" class="nad-vl0to30 nad-label-box">
+                <div>BUS   13_VL</div>
+                <div class="nad-bus-descr">
+                    <span class="nad-bus-0 nad-legend-square"></span>14.5 kV / -4.8°</div>
+            </div>
+        </foreignobject>
+        <foreignobject id="17" y="-248.56" x="-7.58" height="1" width="1">
+            <div xmlns="http://www.w3.org/1999/xhtml" class="nad-vl0to30 nad-label-box">
+                <div>BUS   14_VL</div>
+                <div class="nad-bus-descr">
+                    <span class="nad-bus-0 nad-legend-square"></span>14.3 kV / -5.7°</div>
+            </div>
+        </foreignobject>
+        <foreignobject id="21" y="801.38" x="-101.61" height="1" width="1">
+            <div xmlns="http://www.w3.org/1999/xhtml" class="nad-vl50to70 nad-label-box">
+                <div>BUS    1_VL</div>
+                <div class="nad-bus-descr">
+                    <span class="nad-bus-0 nad-legend-square"></span>73.1 kV / 10.3°</div>
+            </div>
+        </foreignobject>
+        <foreignobject id="25" y="745.72" x="150.35" height="1" width="1">
+            <div xmlns="http://www.w3.org/1999/xhtml" class="nad-vl50to70 nad-label-box">
+                <div>BUS    2_VL</div>
+                <div class="nad-bus-descr">
+                    <span class="nad-bus-0 nad-legend-square"></span>72.1 kV / 5.3°</div>
+            </div>
+        </foreignobject>
+        <foreignobject id="29" y="723.86" x="398.45" height="1" width="1">
+            <div xmlns="http://www.w3.org/1999/xhtml" class="nad-vl50to70 nad-label-box">
+                <div>BUS    3_VL</div>
+                <div class="nad-bus-descr">
+                    <span class="nad-bus-0 nad-legend-square"></span>69.7 kV / -2.4°</div>
+            </div>
+        </foreignobject>
+        <foreignobject id="33" y="411.19" x="380.02" height="1" width="1">
+            <div xmlns="http://www.w3.org/1999/xhtml" class="nad-vl50to70 nad-label-box">
+                <div>BUS    4_VL</div>
+                <div class="nad-bus-descr">
+                    <span class="nad-bus-0 nad-legend-square"></span>70.2 kV / 0.0°</div>
+            </div>
+        </foreignobject>
+        <foreignobject id="37" y="522.69" x="-83.37" height="1" width="1">
+            <div xmlns="http://www.w3.org/1999/xhtml" class="nad-vl50to70 nad-label-box">
+                <div>BUS    5_VL</div>
+                <div class="nad-bus-descr">
+                    <span class="nad-bus-0 nad-legend-square"></span>70.3 kV / 1.5°</div>
+            </div>
+        </foreignobject>
+        <foreignobject id="41" y="-14.35" x="-404.41" height="1" width="1">
+            <div xmlns="http://www.w3.org/1999/xhtml" class="nad-vl0to30 nad-label-box">
+                <div>BUS    6_VL</div>
+                <div class="nad-bus-descr">
+                    <span class="nad-bus-0 nad-legend-square"></span>14.8 kV / -3.9°</div>
+            </div>
+        </foreignobject>
+        <foreignobject id="45" y="90.46" x="676.29" height="1" width="1">
+            <div xmlns="http://www.w3.org/1999/xhtml" class="nad-vl0to30 nad-label-box">
+                <div>BUS    7_VL</div>
+                <div class="nad-bus-descr">
+                    <span class="nad-bus-0 nad-legend-square"></span>14.6 kV / -3.0°</div>
+            </div>
+        </foreignobject>
+        <foreignobject id="49" y="52.86" x="917.02" height="1" width="1">
+            <div xmlns="http://www.w3.org/1999/xhtml" class="nad-vl0to30 nad-label-box">
+                <div>BUS    8_VL</div>
+                <div class="nad-bus-descr">
+                    <span class="nad-bus-0 nad-legend-square"></span>15.0 kV / -3.0°</div>
+            </div>
+        </foreignobject>
+        <foreignobject id="53" y="-123.90" x="385.81" height="1" width="1">
+            <div xmlns="http://www.w3.org/1999/xhtml" class="nad-vl0to30 nad-label-box">
+                <div>BUS    9_VL</div>
+                <div class="nad-bus-descr">
+                    <span class="nad-bus-0 nad-legend-square"></span>14.6 kV / -4.6°</div>
+            </div>
+        </foreignobject>
+    </g>
+</svg>
 </div>
+<p style="font-size:0.8rem;color:#5a6b7e;margin-top:0.3rem">Scroll to zoom, drag to pan.</p>
+<script>
+(function () {
+  var start = function (panZoom) {
+    panZoom("#zoom-978ecd41", {controlIconsEnabled: true, fit: true, center: true,
+                        minZoom: 0.5, maxZoom: 40, zoomScaleSensitivity: 0.3,
+                        dblClickZoomEnabled: false});
+  };
+  if (window.svgPanZoom) {
+    start(window.svgPanZoom);
+  } else if (typeof define === "function" && define.amd) {
+    require.config({paths: {"svg-pan-zoom": "https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.2/dist/svg-pan-zoom.min"}});
+    require(["svg-pan-zoom"], start);
+  } else {
+    var script = document.createElement("script");
+    script.src = "https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.2/dist/svg-pan-zoom.min.js";
+    script.onload = function () { start(window.svgPanZoom); };
+    document.head.appendChild(script);
+  }
+})();
+</script>
 </div>
 </div>
 </section>
 <section id="a-first-dynawo-simulation" class="level2">
 <h2 class="anchored" data-anchor-id="a-first-dynawo-simulation">A first Dynawo simulation</h2>
 <p><code>pypowsybl.dynamic</code> drives Dynawo with three mappings. <strong>Models</strong> attach a dynamic model to a static element, <strong>events</strong> say what happens and when, and <strong>output variables</strong> say what to record. The physical parameters of each model come from a <code>.par</code> file, referenced by a parameter set ID.</p>
-<div id="c9de07a9" class="cell" data-execution_count="6">
+<div id="933423a8" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pypowsybl.dynamic <span class="im">as</span> dyn</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>models_table <span class="op">=</span> pd.read_csv(<span class="st">"../data/ieee14/static_element_dynamic_models.csv"</span>)</span>
@@ -535,7 +1102,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>The five machines get a synchronous generator model. Loads and other elements keep Dynawo’s default model.</p>
-<div id="e87e792e" class="cell" data-execution_count="7">
+<div id="93db73f7" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>models <span class="op">=</span> dyn.ModelMapping()</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> row <span class="kw">in</span> machines.itertuples():</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    models.add_synchronous_generator(</span>
@@ -545,7 +1112,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The disturbance is a 100 ms solid fault on bus 4, cleared without tripping anything.</p>
-<div id="4e3237f8" class="cell" data-execution_count="8">
+<div id="02ad2c86" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>events <span class="op">=</span> dyn.EventMapping()</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>events.add_node_fault(</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    static_id<span class="op">=</span><span class="st">"_BUS____4_TN"</span>, start_time<span class="op">=</span><span class="fl">1.0</span>, fault_time<span class="op">=</span><span class="fl">0.1</span>, r_pu<span class="op">=</span><span class="fl">0.0</span>, x_pu<span class="op">=</span><span class="fl">0.01</span></span>
@@ -559,7 +1126,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The solver settings live in the same <code>.par</code> file. <code>IDAOrder2</code> is a variable-step solver, fine enough to follow a fault.</p>
-<div id="487ac0d7" class="cell" data-execution_count="9">
+<div id="9d35fadd" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>par <span class="op">=</span> <span class="st">"../data/ieee14/IEEE14.par"</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>parameters <span class="op">=</span> dyn.Parameters(</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    start_time<span class="op">=</span><span class="fl">0.0</span>,</span>
@@ -582,7 +1149,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>The curves come back as one DataFrame indexed by time.</p>
-<div id="7ca4226e" class="cell" data-execution_count="10">
+<div id="2c423696" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>curves <span class="op">=</span> result.curves()</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>curves.index <span class="op">=</span> (curves.index <span class="op">-</span> curves.index[<span class="dv">0</span>]).total_seconds()</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -636,7 +1203,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="f20c3d7b" class="cell" data-tags="[&quot;solution&quot;]" data-execution_count="11">
+<div id="d431ec48" class="cell" data-tags="[&quot;solution&quot;]" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>network <span class="op">=</span> pp.network.load(<span class="st">"../data/ieee14/IEEE14.iidm"</span>)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>pp.loadflow.run_ac(network)</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
