@@ -82,7 +82,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-4c11d9c02471666671d1ce5a25028114.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-7a26c9f61d74de43901c25117274f69d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-7e891a3c181cf25477291a2af3a027c1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -238,7 +238,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Generate trajectories under faults and trips, and read back what each sample went through.</li>
 </ul>
 </section>
-<div id="10890ffa" class="cell" data-execution_count="2">
+<div id="73c6044f" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> shutil</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
@@ -333,7 +333,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="four-kinds-of-trouble" class="level2">
 <h2 class="anchored" data-anchor-id="four-kinds-of-trouble">Four kinds of trouble</h2>
 <p>A bus fault cleared on its own, a line trip, a fault cleared by tripping a line next to it, and the loss of a generator. Faults are twice as likely as the rest.</p>
-<div id="b19440db" class="cell" data-execution_count="3">
+<div id="2b8c076c" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>event_perturbation <span class="op">=</span> yaml.safe_load(<span class="st">"""</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="st">type: random</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="st">n_event_variants: 4            # event variants per operating point</span></span>
@@ -380,7 +380,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="preview-the-draws" class="level2">
 <h2 class="anchored" data-anchor-id="preview-the-draws">Preview the draws</h2>
 <p>The draw happens on the graph of the grid, so it can be inspected without running Dynawo. Datakit calls the same functions inside the pipeline, seeded per sample.</p>
-<div id="71533dee" class="cell" data-execution_count="4">
+<div id="808dfb50" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> gridfm_datakit.dynamic.event_perturbation <span class="im">import</span> draw_events, parse_event_perturbation</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> gridfm_datakit.dynamic.placement <span class="im">import</span> EventGraph</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -513,7 +513,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="generate" class="level2">
 <h2 class="anchored" data-anchor-id="generate">Generate</h2>
 <p>Six load scenarios, no topology change so that the events stand out, four event variants each. The configuration is the one from Part 3 with <code>event_perturbation</code> added, a shorter list of curves, and its own output folder.</p>
-<div id="fccabad4" class="cell" data-execution_count="5">
+<div id="c2c0abf9" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>variables <span class="op">=</span> pd.DataFrame(</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    [(<span class="st">"Curve"</span>, <span class="ss">f"_BUS</span><span class="sc">{</span><span class="st">'_'</span> <span class="op">*</span> (<span class="dv">5</span> <span class="op">-</span> <span class="bu">len</span>(<span class="bu">str</span>(i)))<span class="sc">}{</span>i<span class="sc">}</span><span class="ss">_TN"</span>, <span class="st">"U_value"</span>) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">15</span>)]</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> [(<span class="st">"Curve"</span>, <span class="st">"_GEN____1_SM"</span>, <span class="st">"generator_omegaPu_value"</span>)],</span>
@@ -576,7 +576,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>)</span>
 <span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>config[<span class="st">"dynamic"</span>][<span class="st">"event_perturbation"</span>] <span class="op">=</span> event_perturbation</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="7762f196" class="cell" data-execution_count="6">
+<div id="d975d10e" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> gridfm_datakit.dynamic.generate_dynamic <span class="im">import</span> generate_dynamic_data</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>generate_dynamic_data(config)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -585,7 +585,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="what-each-sample-went-through" class="level2">
 <h2 class="anchored" data-anchor-id="what-each-sample-went-through">What each sample went through</h2>
 <p><code>events.parquet</code> records every simulated event, keyed like the curves.</p>
-<div id="375caa1b" class="cell" data-execution_count="7">
+<div id="bf638e05" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>root <span class="op">=</span> Path(<span class="st">"outputs/part4/data/IEEE14/raw/dynamic"</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>KEYS <span class="op">=</span> [<span class="st">"scenario_index"</span>, <span class="st">"perturbation_index"</span>, <span class="st">"event_index"</span>]</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -725,7 +725,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div id="d6fca404" class="cell" data-execution_count="8">
+<div id="d5b06ad1" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>kind <span class="op">=</span> events.drop_duplicates(KEYS).set_index(KEYS).scenario</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>kind.value_counts().rename(<span class="st">"samples"</span>).to_frame()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="8">
@@ -770,23 +770,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="responses-by-event-type" class="level2">
 <h2 class="anchored" data-anchor-id="responses-by-event-type">Responses by event type</h2>
 <p>One panel per scenario. The lowest bus voltage across the grid, relative to its value before the event, shows how deep each disturbance cut.</p>
-<div id="e15e9ebf" class="cell" data-execution_count="9">
+<div id="fa29670f" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>u_names <span class="op">=</span> [name <span class="cf">for</span> name <span class="kw">in</span> meta[<span class="st">"variable_names"</span>] <span class="cf">if</span> name.endswith(<span class="st">"U_value"</span>)]</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>names <span class="op">=</span> [s[<span class="st">"name"</span>] <span class="cf">for</span> s <span class="kw">in</span> event_perturbation[<span class="st">"scenarios"</span>]]</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="bu">len</span>(names), figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="fl">3.4</span>), sharey<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, name, color <span class="kw">in</span> <span class="bu">zip</span>(axes, names, PALETTE):</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="fl">6.4</span>), sharex<span class="op">=</span><span class="va">True</span>, sharey<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, name, color <span class="kw">in</span> <span class="bu">zip</span>(axes.flat, names, PALETTE):</span>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> key <span class="kw">in</span> [k <span class="cf">for</span> k <span class="kw">in</span> slice_of <span class="cf">if</span> kind.get(k) <span class="op">==</span> name]:</span>
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>        t <span class="op">=</span> curve(key, u_names[<span class="dv">0</span>])[<span class="dv">0</span>]</span>
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>        u <span class="op">=</span> np.array([curve(key, n)[<span class="dv">1</span>] <span class="cf">for</span> n <span class="kw">in</span> u_names])</span>
 <span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>        ax.plot(t, (u <span class="op">/</span> u[:, :<span class="dv">1</span>]).<span class="bu">min</span>(axis<span class="op">=</span><span class="dv">0</span>), color<span class="op">=</span>color, linewidth<span class="op">=</span><span class="fl">1.2</span>, alpha<span class="op">=</span><span class="fl">0.8</span>)</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    ax.<span class="bu">set</span>(title<span class="op">=</span>name.replace(<span class="st">"_"</span>, <span class="st">" "</span>), xlabel<span class="op">=</span><span class="st">"time (s)"</span>, xlim<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">6</span>))</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_ylabel(<span class="st">"lowest bus voltage (pu of initial)"</span>)</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    ax.<span class="bu">set</span>(title<span class="op">=</span>name.replace(<span class="st">"_"</span>, <span class="st">" "</span>), xlim<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">6</span>))</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax <span class="kw">in</span> axes[<span class="dv">1</span>]:</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    ax.set_xlabel(<span class="st">"time (s)"</span>)</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax <span class="kw">in</span> axes[:, <span class="dv">0</span>]:</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    ax.set_ylabel(<span class="st">"lowest bus voltage</span><span class="ch">\n</span><span class="st">(pu of initial)"</span>)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="04-dynamic-events_files/figure-html/cell-10-output-1.png" width="1309" height="363" class="figure-img"></p>
+<p><img src="04-dynamic-events_files/figure-html/cell-10-output-1.png" width="1090" height="693" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -796,7 +799,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="initial-state-event-trajectory" class="level2">
 <h2 class="anchored" data-anchor-id="initial-state-event-trajectory">Initial state, event, trajectory</h2>
 <p>Every sample now holds three aligned pieces: the Parquet initial state, the event record and the Zarr trajectory. Add the <code>topology_perturbation</code> of Part 3 and all three keys vary at once.</p>
-<div id="2dc6ab00" class="cell" data-execution_count="10">
+<div id="5b1f0191" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>key <span class="op">=</span> <span class="bu">list</span>(slice_of)[<span class="dv">5</span>]</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"sample"</span>, <span class="bu">dict</span>(<span class="bu">zip</span>(KEYS, key)))</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"initial demand"</span>, <span class="bu">round</span>(bus.set_index(KEYS).loc[key].Pd.<span class="bu">sum</span>(), <span class="dv">1</span>), <span class="st">"MW"</span>)</span>
@@ -865,9 +868,19 @@ initial demand 428.7 MW</code></pre>
 <p>Add a fifth scenario, <code>voltage_step</code>, that changes the voltage set-point of generator 1 (<code>static_id: _GEN____1_SM</code>) by a value drawn uniformly between -0.05 and 0.05 pu. Preview twenty draws with the new spec and count how often each scenario comes up.</p>
 </div>
 </div>
-<div id="654e2bec" class="cell" data-tags="[&quot;solution&quot;]" data-execution_count="11">
-<details class="code-fold">
-<summary>Show a solution</summary>
+<div class="solution callout callout-style-default callout-note callout-titled" title="Show a solution">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show a solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div id="52c18f11" class="cell" data-tags="[&quot;solution&quot;]" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>voltage_step <span class="op">=</span> yaml.safe_load(<span class="st">"""</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="st">name: voltage_step</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="st">start_time: {distribution: uniform, low: 0.5, high: 2.0}</span></span>
@@ -883,7 +896,6 @@ initial demand 428.7 MW</code></pre>
 <span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">0</span>)</span>
 <span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>draws <span class="op">=</span> [draw_events(spec, graph, rng) <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20</span>)]</span>
 <span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>pd.Series([d.scenario.iloc[<span class="dv">0</span>] <span class="cf">for</span> d <span class="kw">in</span> draws]).value_counts()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
 <div class="cell-output cell-output-display" data-execution_count="11">
 <pre><code>fault_cleared_by_trip    6
 line_trip                6
@@ -891,6 +903,9 @@ voltage_step             3
 bus_fault                3
 generator_trip           2
 Name: count, dtype: int64</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled" title="Where to go next">

@@ -82,7 +82,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-4c11d9c02471666671d1ce5a25028114.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-7a26c9f61d74de43901c25117274f69d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-7e891a3c181cf25477291a2af3a027c1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -236,7 +236,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Explore the dataset and see why it contains operating points outside the limits.</li>
 </ul>
 </section>
-<div id="5e3c7c29" class="cell" data-execution_count="2">
+<div id="c33ef256" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> shutil</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
@@ -254,7 +254,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="a-real-grid" class="level2">
 <h2 class="anchored" data-anchor-id="a-real-grid">A real grid</h2>
 <p>The <strong>PEGASE</strong> project mapped the European high-voltage grid for state estimation and security studies. Its 89-bus case is a slice of that grid, published with MATPOWER and the PGLib benchmark library. GridFM-Datakit downloads PGLib cases on demand, and its PowSyBl reader turns the MATPOWER file into a pypowsybl network.</p>
-<div id="f662cec5" class="cell" data-execution_count="3">
+<div id="851e1c16" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> gridfm_datakit.network <span class="im">import</span> get_pglib_source_path</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> gridfm_datakit.powsybl <span class="im">import</span> load_net</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -300,7 +300,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Three voltage levels, from 380 kV down to 150 kV. A load flow with OpenLoadFlow checks the case before anything else.</p>
-<div id="29f98db8" class="cell" data-execution_count="4">
+<div id="04019392" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> pp.loadflow.run_ac(grid, pp.loadflow.Parameters(distributed_slack<span class="op">=</span><span class="va">False</span>))</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result[<span class="dv">0</span>].status_text, <span class="st">"in"</span>, result[<span class="dv">0</span>].iteration_count, <span class="st">"iterations"</span>)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -319,13 +319,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>The network area diagram around the most loaded substation shows the flows.</p>
-<div id="93966d41" class="cell" data-execution_count="5">
+<div id="0bc09e13" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>busiest <span class="op">=</span> grid.get_loads().groupby(<span class="st">"voltage_level_id"</span>).p0.<span class="bu">sum</span>().idxmax()</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>grid.get_network_area_diagram(busiest, depth<span class="op">=</span><span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="7158cac4" class="cell" data-execution_count="6">
 <div class="cell-output cell-output-display" data-execution_count="5">
 <div>
 <figure class="figure">
-<p><img src="02-steady-state_files/figure-html/cell-6-output-1.svg" class="img-fluid figure-img"></p>
+<p><img src="02-steady-state_files/figure-html/cell-7-output-1.svg" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -334,7 +336,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="exchange-formats" class="level2">
 <h2 class="anchored" data-anchor-id="exchange-formats">Exchange formats</h2>
 <p>European operators exchange grid models as <strong>CGMES</strong>, the Common Grid Model Exchange Standard. PowSyBl writes and reads it, as well as its own <strong>XIIDM</strong> format. A round trip shows what each one keeps.</p>
-<div id="fe7f107b" class="cell" data-execution_count="6">
+<div id="d7921aea" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>grid.save(<span class="st">"outputs/part2/pegase89.zip"</span>, <span class="bu">format</span><span class="op">=</span><span class="st">"CGMES"</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>grid.save(<span class="st">"outputs/part2/pegase89.xiidm"</span>, <span class="bu">format</span><span class="op">=</span><span class="st">"XIIDM"</span>)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -401,7 +403,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="configure-gridfm-datakit">Configure GridFM-Datakit</h2>
 <p>For every <strong>load scenario</strong>, datakit solves an AC optimal power flow with PowerModels.jl to get a realistic dispatch. It then draws <strong>topology variants</strong>, here one line or generator out at a time, and solves each one with <strong>OpenLoadFlow</strong> from the same set-points. The set-points are not re-optimised after the outage, so some samples break voltage or thermal limits. That is deliberate. A model meant for operations has to see stressed states too.</p>
 <p>The configuration is the YAML file you would pass to <code>gridfm_datakit generate</code>.</p>
-<div id="6bed02d0" class="cell" data-execution_count="7">
+<div id="bdafaa0a" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>config <span class="op">=</span> yaml.safe_load(<span class="st">"""</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="st">network:</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="st">  name: pegase89</span></span>
@@ -462,7 +464,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="generate" class="level2">
 <h2 class="anchored" data-anchor-id="generate">Generate</h2>
-<div id="1f82de66" class="cell" data-execution_count="8">
+<div id="c8f71fc8" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> gridfm_datakit.generate <span class="im">import</span> generate_power_flow_data</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>generate_power_flow_data(config)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -472,7 +474,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="inside-the-dataset" class="level2">
 <h2 class="anchored" data-anchor-id="inside-the-dataset">Inside the dataset</h2>
 <p>Every table is keyed by <code>scenario</code>, with one row per bus, generator or branch and per sample.</p>
-<div id="27173f27" class="cell" data-execution_count="9">
+<div id="a028ebe6" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>raw <span class="op">=</span> Path(<span class="st">"outputs/part2/data/pegase89/raw"</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>bus <span class="op">=</span> pd.read_parquet(raw <span class="op">/</span> <span class="st">"bus_data.parquet"</span>)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>branch <span class="op">=</span> pd.read_parquet(raw <span class="op">/</span> <span class="st">"branch_data.parquet"</span>)</span>
@@ -593,20 +595,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Each load scenario is a point on a yearly load curve, with local noise on every bus.</p>
-<div id="46644542" class="cell" data-execution_count="10">
+<div id="fc87b7c2" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>demand <span class="op">=</span> bus.groupby(<span class="st">"load_scenario_idx"</span>).Pd.<span class="bu">sum</span>()</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> demand.plot(marker<span class="op">=</span><span class="st">"o"</span>, markersize<span class="op">=</span><span class="dv">4</span>, color<span class="op">=</span>PALETTE[<span class="dv">0</span>])</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(title<span class="op">=</span><span class="st">"Total demand per load scenario"</span>, xlabel<span class="op">=</span><span class="st">"load scenario"</span>, ylabel<span class="op">=</span><span class="st">"MW"</span>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="02-steady-state_files/figure-html/cell-11-output-1.png" width="866" height="429" class="figure-img"></p>
+<p><img src="02-steady-state_files/figure-html/cell-12-output-1.png" width="866" height="429" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>The outages spread the voltages and push some branches over their rating.</p>
-<div id="4b56051f" class="cell" data-execution_count="11">
+<div id="0aee1e7d" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>branch[<span class="st">"loading"</span>] <span class="op">=</span> np.hypot(branch.pf, branch.qf) <span class="op">/</span> branch.rate_a</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>in_service <span class="op">=</span> branch[(branch.br_status <span class="op">==</span> <span class="dv">1</span>) <span class="op">&amp;</span> (branch.rate_a <span class="op">&gt;</span> <span class="dv">0</span>)]</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -628,7 +630,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="02-steady-state_files/figure-html/cell-12-output-2.png" width="1089" height="385" class="figure-img"></p>
+<p><img src="02-steady-state_files/figure-html/cell-13-output-2.png" width="1089" height="385" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -649,9 +651,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Restrict the outages to branches and draw five topology variants per load scenario. Save the configuration as <code>outputs/part2/lines_only.yaml</code> and run it with the command line, <code>gridfm_datakit generate outputs/part2/lines_only.yaml</code>, from a terminal or from Python with <code>subprocess</code>. Then compare the share of samples with an overloaded branch.</p>
 </div>
 </div>
-<div id="d6c1f78f" class="cell" data-tags="[&quot;solution&quot;]" data-execution_count="12">
-<details class="code-fold">
-<summary>Show a solution</summary>
+<div class="solution callout callout-style-default callout-note callout-titled" title="Show a solution">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show a solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div id="b008cc9a" class="cell" data-tags="[&quot;solution&quot;]" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>lines_only <span class="op">=</span> {</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">**</span>config,</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"topology_perturbation"</span>: {</span>
@@ -673,9 +685,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>b2 <span class="op">=</span> b2[(b2.br_status <span class="op">==</span> <span class="dv">1</span>) <span class="op">&amp;</span> (b2.rate_a <span class="op">&gt;</span> <span class="dv">0</span>)]</span>
 <span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>b2[<span class="st">"loading"</span>] <span class="op">=</span> np.hypot(b2.pf, b2.qf) <span class="op">/</span> b2.rate_a</span>
 <span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>b2<span class="sc">.</span>groupby(<span class="st">'scenario'</span>)<span class="sc">.</span>loading<span class="sc">.</span><span class="bu">max</span>()<span class="sc">.</span>gt(<span class="fl">1.0</span>)<span class="sc">.</span>mean()<span class="sc">:.0%}</span><span class="ss"> of samples overloaded"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>97% of samples overloaded</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled" title="Next">

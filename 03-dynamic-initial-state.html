@@ -82,7 +82,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-4c11d9c02471666671d1ce5a25028114.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-7a26c9f61d74de43901c25117274f69d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-7e891a3c181cf25477291a2af3a027c1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -238,7 +238,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Join the Zarr trajectories to their Parquet initial states and shape them for training.</li>
 </ul>
 </section>
-<div id="79da20ed" class="cell" data-execution_count="2">
+<div id="0c04a879" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> shutil</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -286,7 +286,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="four-tables-describe-the-dynamics" class="level2">
 <h2 class="anchored" data-anchor-id="four-tables-describe-the-dynamics">Four tables describe the dynamics</h2>
 <p>The case folder holds the network, a Dynawo <code>.par</code> file and four CSV tables. The first one says which dynamic model each element gets.</p>
-<div id="c69f1b8b" class="cell" data-execution_count="3">
+<div id="ebacb90e" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>pd.read_csv(case <span class="op">/</span> <span class="st">"static_element_dynamic_models.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="3">
 <div>
@@ -359,7 +359,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Automation systems are models without a static element, here an under-voltage protection on generator 3.</p>
-<div id="a35fcf15" class="cell" data-execution_count="4">
+<div id="facdc6d6" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>pd.read_csv(case <span class="op">/</span> <span class="st">"automation_systems.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="4">
 <div>
@@ -392,7 +392,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>The events table holds the disturbance. We replace the example’s generator trip by the fault from Part 1, a 100 ms short circuit on bus 4.</p>
-<div id="5a249c00" class="cell" data-execution_count="5">
+<div id="c6c8ad06" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>events <span class="op">=</span> pd.DataFrame(</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    [(<span class="st">"NodeFault"</span>, <span class="st">"_BUS____4_TN"</span>, <span class="fl">1.0</span>, <span class="st">"fault_time=0.1;r_pu=0;x_pu=0.01;"</span>)],</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>[<span class="st">"event_name"</span>, <span class="st">"static_id"</span>, <span class="st">"start_time"</span>, <span class="st">"params"</span>],</span>
@@ -428,7 +428,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>The variables table says what to record. A <code>Curve</code> is a full time series. We record the voltage of all 14 buses and the speed of the five machines.</p>
-<div id="8e4803d5" class="cell" data-execution_count="6">
+<div id="e30cbe5d" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>bus_ids <span class="op">=</span> [<span class="ss">f"_BUS</span><span class="sc">{</span><span class="st">'_'</span> <span class="op">*</span> (<span class="dv">5</span> <span class="op">-</span> <span class="bu">len</span>(<span class="bu">str</span>(i)))<span class="sc">}{</span>i<span class="sc">}</span><span class="ss">_TN"</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">15</span>)]</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>machines <span class="op">=</span> [<span class="st">"_GEN____1_SM"</span>, <span class="st">"_GEN____2_SM"</span>, <span class="st">"_GEN____3_SM"</span>, <span class="st">"_GEN____6_SM"</span>, <span class="st">"_GEN____8_SM"</span>]</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>variables <span class="op">=</span> pd.DataFrame(</span>
@@ -511,7 +511,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="randomize-the-initial-state" class="level2">
 <h2 class="anchored" data-anchor-id="randomize-the-initial-state">Randomize the initial state</h2>
 <p>Two blocks create the diversity. <code>load</code> draws scenarios along a yearly load curve with local noise. <code>topology_perturbation</code> takes one branch out per variant, two variants per scenario. The <code>dynamic</code> block points at the tables and at the Dynawo parameters.</p>
-<div id="654bffee" class="cell" data-execution_count="7">
+<div id="13f0582e" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>config <span class="op">=</span> yaml.safe_load(<span class="st">"""</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="st">network:</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="st">  name: IEEE14</span></span>
@@ -579,7 +579,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="generate" class="level2">
 <h2 class="anchored" data-anchor-id="generate">Generate</h2>
 <p>A configuration with a <code>dynamic</code> block selects the dynamic pipeline. On the command line, it is the same <code>gridfm_datakit generate config.yaml</code>.</p>
-<div id="cf006032" class="cell" data-execution_count="8">
+<div id="118f9412" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> gridfm_datakit.dynamic.generate_dynamic <span class="im">import</span> generate_dynamic_data</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>generate_dynamic_data(config)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -587,7 +587,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="what-was-written" class="level2">
 <h2 class="anchored" data-anchor-id="what-was-written">What was written</h2>
-<div id="c2cabaea" class="cell" data-execution_count="9">
+<div id="30ff2b89" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>root <span class="op">=</span> Path(<span class="st">"outputs/part3/data/IEEE14/raw/dynamic"</span>)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">sorted</span>(p.name <span class="cf">for</span> p <span class="kw">in</span> root.iterdir())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="9">
@@ -603,7 +603,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>The <strong>Parquet</strong> tables hold the steady state each simulation started from, in the same schema as Part 2. The <strong>Zarr</strong> store holds the trajectories, and <code>metadata.json</code> describes its axes. Both carry the three keys.</p>
-<div id="d9151d51" class="cell" data-execution_count="10">
+<div id="1cd0941f" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> zarr</span>
@@ -636,7 +636,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A failed optimal power flow, power flow or simulation drops its sample, so slice <code>i</code> of the Zarr store is not scenario <code>i</code>. Always match the three keys.</p>
 </div>
 </div>
-<div id="91879803" class="cell" data-execution_count="11">
+<div id="f004d918" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>KEYS <span class="op">=</span> [<span class="st">"scenario_index"</span>, <span class="st">"perturbation_index"</span>, <span class="st">"event_index"</span>]</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>key_columns <span class="op">=</span> <span class="bu">zip</span>(<span class="op">*</span>(np.asarray(store[k]) <span class="cf">for</span> k <span class="kw">in</span> KEYS))</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>slice_of <span class="op">=</span> {<span class="bu">tuple</span>(<span class="bu">int</span>(v) <span class="cf">for</span> v <span class="kw">in</span> key): i <span class="cf">for</span> i, key <span class="kw">in</span> <span class="bu">enumerate</span>(key_columns)}</span>
@@ -659,7 +659,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="same-fault-different-responses" class="level2">
 <h2 class="anchored" data-anchor-id="same-fault-different-responses">Same fault, different responses</h2>
 <p>Colour each trajectory by the total demand of its initial state.</p>
-<div id="0ae73700" class="cell" data-execution_count="12">
+<div id="d4f51727" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>demand <span class="op">=</span> bus.groupby(KEYS).Pd.<span class="bu">sum</span>()</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>norm <span class="op">=</span> plt.Normalize(demand.<span class="bu">min</span>(), demand.<span class="bu">max</span>())</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>cmap <span class="op">=</span> plt.cm.Blues</span>
@@ -686,7 +686,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="shape-it-for-a-model" class="level2">
 <h2 class="anchored" data-anchor-id="shape-it-for-a-model">Shape it for a model</h2>
 <p>A typical supervised pair is the initial state as input and the trajectory as target. Dynawo’s variable-step solver gives each run its own time grid, so resample onto a common one first.</p>
-<div id="cf65ca88" class="cell" data-execution_count="13">
+<div id="aa237c93" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>grid_t <span class="op">=</span> np.linspace(<span class="fl">0.0</span>, <span class="fl">10.0</span>, <span class="dv">201</span>)</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>features <span class="op">=</span> [<span class="st">"Pd"</span>, <span class="st">"Qd"</span>, <span class="st">"Vm"</span>, <span class="st">"Va"</span>]</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>initial <span class="op">=</span> bus.set_index(KEYS)</span>
@@ -718,9 +718,19 @@ Y (24, 19, 201) (samples, curves, time steps)</code></pre>
 <p>For every sample, compute the lowest rotor speed of generator 1 during the run. Plot it against the total demand of the initial state, one colour per <code>perturbation_index</code>. Do some topologies stand out?</p>
 </div>
 </div>
-<div id="e8d716d3" class="cell" data-tags="[&quot;solution&quot;]" data-execution_count="14">
-<details class="code-fold">
-<summary>Show a solution</summary>
+<div class="solution callout callout-style-default callout-note callout-titled" title="Show a solution">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Show a solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div id="481e9523" class="cell" data-tags="[&quot;solution&quot;]" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>nadir <span class="op">=</span> pd.Series(</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    {key: curve(key, <span class="st">"_GEN____1_SM_generator_omegaPu_value"</span>)[<span class="dv">1</span>].<span class="bu">min</span>() <span class="cf">for</span> key <span class="kw">in</span> slice_of}</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>)</span>
@@ -732,12 +742,14 @@ Y (24, 19, 201) (samples, curves, time steps)</code></pre>
 <span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    ax.scatter(group.demand, group.nadir, s<span class="op">=</span><span class="dv">36</span>, color<span class="op">=</span>PALETTE[p], label<span class="op">=</span><span class="ss">f"variant </span><span class="sc">{</span>p<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(title<span class="op">=</span><span class="st">"Speed nadir of generator 1"</span>, xlabel<span class="op">=</span><span class="st">"total demand (MW)"</span>, ylabel<span class="op">=</span><span class="st">"pu"</span>)</span>
 <span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>ax.legend()<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
 <p><img src="03-dynamic-initial-state_files/figure-html/cell-15-output-1.png" width="661" height="412" class="figure-img"></p>
 </figure>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
