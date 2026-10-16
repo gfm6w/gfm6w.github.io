@@ -213,6 +213,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#two-tools-from-the-control-room" id="toc-two-tools-from-the-control-room" class="nav-link active" data-scroll-target="#two-tools-from-the-control-room">Two tools from the control room</a></li>
   <li><a href="#why-gridfm-datakit-integrates-them" id="toc-why-gridfm-datakit-integrates-them" class="nav-link" data-scroll-target="#why-gridfm-datakit-integrates-them">Why GridFM-Datakit integrates them</a></li>
   <li><a href="#powsybl-in-a-few-lines" id="toc-powsybl-in-a-few-lines" class="nav-link" data-scroll-target="#powsybl-in-a-few-lines">PowSyBl in a few lines</a></li>
+  <li><a href="#exchange-formats" id="toc-exchange-formats" class="nav-link" data-scroll-target="#exchange-formats">Exchange formats</a></li>
   <li><a href="#a-first-dynawo-simulation" id="toc-a-first-dynawo-simulation" class="nav-link" data-scroll-target="#a-first-dynawo-simulation">A first Dynawo simulation</a></li>
   <li><a href="#your-turn" id="toc-your-turn" class="nav-link" data-scroll-target="#your-turn">Your turn</a></li>
   </ul>
@@ -233,6 +234,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li>Place PowSyBl and Dynawo in the GridFM-Datakit pipeline.</li>
 <li>Load a grid, solve a power flow and draw it with pypowsybl.</li>
+<li>Move a grid between exchange formats and see what each one keeps.</li>
 <li>Run a first Dynawo time-domain simulation from Python and plot it.</li>
 </ul>
 </section>
@@ -265,8 +267,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td>Simulations</td>
-<td>Load flow (OpenLoadFlow), security analysis, sensitivities, short circuit</td>
-<td>Short-term stability (DynaSwing), long-term voltage stability (DynaWaltz), steady state with automata (DynaFlow)</td>
+<td>Load flow (OpenLoadFlow), security analysis, sensitivities, short circuit, remedial action optimizer</td>
+<td>Short-term stability (DynaSwing), long-term stability (DynaWaltz), steady state with automata (DynaFlow)</td>
 </tr>
 <tr class="odd">
 <td>Home</td>
@@ -308,7 +310,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="powsybl-in-a-few-lines" class="level2">
 <h2 class="anchored" data-anchor-id="powsybl-in-a-few-lines">PowSyBl in a few lines</h2>
 <p>The IEEE 14-bus case used throughout the dynamic parts ships as an XIIDM file, the native PowSyBl format.</p>
-<div id="8d90366e" class="cell" data-execution_count="2">
+<div id="b574d2fd" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pypowsybl <span class="im">as</span> pp</span>
@@ -386,7 +388,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Every element type is a pandas DataFrame, and every attribute can be updated in place. A load flow with OpenLoadFlow fills in the voltages and the flows.</p>
-<div id="0d976b22" class="cell" data-execution_count="3">
+<div id="23a5f415" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> pp.loadflow.run_ac(network)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result[<span class="dv">0</span>].status_text, <span class="st">"in"</span>, result[<span class="dv">0</span>].iteration_count, <span class="st">"iterations"</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>network.get_buses()[[<span class="st">"v_mag"</span>, <span class="st">"v_angle"</span>]].<span class="bu">round</span>(<span class="dv">2</span>).T</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -456,15 +458,72 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>PowSyBl also draws the grid. The network area diagram shows each voltage level with its flows.</p>
-<div id="cfa30913" class="cell" data-execution_count="4">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>network.get_network_area_diagram()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>PowSyBl models equipment in detail, and OpenLoadFlow can control it. On a copy of the grid, the ratio tap changer of the transformer between buses 4 and 9 starts at its lowest tap and regulates the voltage of bus 9 to 14.3 kV.</p>
+<div id="3cfd610e" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>regulated <span class="op">=</span> pp.network.load(<span class="st">"../data/ieee14/IEEE14.iidm"</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>transformer <span class="op">=</span> <span class="st">"_BUS____4-BUS____9-1_PT"</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>regulated.update_ratio_tap_changers(</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">id</span><span class="op">=</span>transformer,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    tap<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    oltc<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    regulated_side<span class="op">=</span><span class="st">"TWO"</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    target_v<span class="op">=</span><span class="fl">14.3</span>,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    target_deadband<span class="op">=</span><span class="fl">0.1</span>,</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>regulated.update_ratio_tap_changers(<span class="bu">id</span><span class="op">=</span>transformer, regulating<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> pp.loadflow.run_ac(</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    regulated, pp.loadflow.Parameters(transformer_voltage_control_on<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result[<span class="dv">0</span>].status_text, <span class="st">"in"</span>, result[<span class="dv">0</span>].iteration_count, <span class="st">"iterations"</span>)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>tap <span class="op">=</span> regulated.get_ratio_tap_changers().loc[transformer]</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"tap"</span>, tap.tap, <span class="st">"solved at"</span>, tap.solved_tap_position)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>pd.DataFrame(</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"base case"</span>: network.get_buses().v_mag, <span class="st">"regulated"</span>: regulated.get_buses().v_mag}</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>).loc[[<span class="st">"_BUS____9_VL_0"</span>]].<span class="bu">round</span>(<span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Converged in 9 iterations
+tap 1 solved at 10</code></pre>
 </div>
-<div id="0c44d8b1" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-display" data-execution_count="4">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">base case</th>
+<th data-quarto-table-cell-role="th">regulated</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">id</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">_BUS____9_VL_0</th>
+<td>14.57</td>
+<td>14.31</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>The load flow leaves <code>tap</code> at its set value and reports the position it chose in <code>solved_tap_position</code>. The base case <code>network</code> is untouched, so the rest of this part runs on the original grid.</p>
+<p>PowSyBl also draws the grid. The network area diagram shows each voltage level with its flows.</p>
+<div id="4df3cfdb" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>network.get_network_area_diagram()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="69c33174" class="cell" data-execution_count="6">
+<div class="cell-output cell-output-display" data-execution_count="5">
 
 <div style="height:560px;border:1px solid #e3e8ee;border-radius:6px;overflow:hidden">
-<svg id="zoom-978ecd41" width="100%" height="100%" viewbox="-922.61 -682.64 2039.63 1724.02" xmlns="http://www.w3.org/2000/svg">
+<svg id="zoom-74d79f7e" width="100%" height="100%" viewbox="-922.61 -682.64 2039.63 1724.02" xmlns="http://www.w3.org/2000/svg">
     <style>.nad-branch-edges .nad-edge-path, .nad-3wt-edges .nad-edge-path {stroke: var(--nad-vl-color, lightgrey); stroke-width: 5; fill: none}
 .nad-branch-edges .nad-winding, .nad-3wt-nodes .nad-winding {stroke: var(--nad-vl-color, lightgrey); stroke-width: 5; fill: none}
 .nad-text-edges {stroke: black; stroke-width: 3; stroke-dasharray: 6,7; fill: none}
@@ -1016,7 +1075,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script>
 (function () {
   var start = function (panZoom) {
-    panZoom("#zoom-978ecd41", {controlIconsEnabled: true, fit: true, center: true,
+    panZoom("#zoom-74d79f7e", {controlIconsEnabled: true, fit: true, center: true,
                         minZoom: 0.5, maxZoom: 40, zoomScaleSensitivity: 0.3,
                         dblClickZoomEnabled: false});
   };
@@ -1036,16 +1095,100 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
+<section id="exchange-formats" class="level2">
+<h2 class="anchored" data-anchor-id="exchange-formats">Exchange formats</h2>
+<p>European operators exchange grid models as <strong>CGMES</strong>, the Common Grid Model Exchange Standard. PowSyBl writes and reads it, as well as its own <strong>XIIDM</strong> format. A round trip shows what each one keeps. It runs on the PEGASE 89-bus case of PGLib, the grid of Part 2, which GridFM-Datakit’s PowSyBl reader turns from a MATPOWER file into a pypowsybl network.</p>
+<div id="41b72733" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> gridfm_datakit.network <span class="im">import</span> get_pglib_source_path</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> gridfm_datakit.powsybl <span class="im">import</span> load_net</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>Path(<span class="st">"outputs/part1"</span>).mkdir(parents<span class="op">=</span><span class="va">True</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>grid <span class="op">=</span> load_net(get_pglib_source_path(<span class="st">"case89_pegase"</span>)).pp_net</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>grid.save(<span class="st">"outputs/part1/pegase89.zip"</span>, <span class="bu">format</span><span class="op">=</span><span class="st">"CGMES"</span>)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>grid.save(</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"outputs/part1/pegase89_cgmes3.zip"</span>,</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">format</span><span class="op">=</span><span class="st">"CGMES"</span>,</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    parameters<span class="op">=</span>{<span class="st">"iidm.export.cgmes.cim-version"</span>: <span class="st">"100"</span>},</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>grid.save(<span class="st">"outputs/part1/pegase89.xiidm"</span>, <span class="bu">format</span><span class="op">=</span><span class="st">"XIIDM"</span>)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>copies <span class="op">=</span> {</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"MATPOWER source"</span>: grid,</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"CGMES 2.4.15"</span>: pp.network.load(<span class="st">"outputs/part1/pegase89.zip"</span>),</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"CGMES 3"</span>: pp.network.load(<span class="st">"outputs/part1/pegase89_cgmes3.zip"</span>),</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">"XIIDM"</span>: pp.network.load(<span class="st">"outputs/part1/pegase89.xiidm"</span>),</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>pd.DataFrame(</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>        name: [<span class="bu">len</span>(n.get_buses()), <span class="bu">len</span>(n.get_generators()), <span class="bu">len</span>(n.get_branches()),</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>               <span class="bu">len</span>(n.get_operational_limits())]</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> name, n <span class="kw">in</span> copies.items()</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>[<span class="st">"buses"</span>, <span class="st">"generators"</span>, <span class="st">"branches"</span>, <span class="st">"operational limits"</span>],</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">MATPOWER source</th>
+<th data-quarto-table-cell-role="th">CGMES 2.4.15</th>
+<th data-quarto-table-cell-role="th">CGMES 3</th>
+<th data-quarto-table-cell-role="th">XIIDM</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">buses</th>
+<td>89</td>
+<td>89</td>
+<td>87</td>
+<td>89</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">generators</th>
+<td>12</td>
+<td>12</td>
+<td>12</td>
+<td>12</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">branches</th>
+<td>210</td>
+<td>210</td>
+<td>210</td>
+<td>210</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">operational limits</th>
+<td>1260</td>
+<td>0</td>
+<td>1260</td>
+<td>1260</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>A MATPOWER case rates its branches in apparent power. CGMES 2.4.15 holds apparent power limits in its Equipment Operation profile, which PowSyBl does not write for a bus-branch model like this one, so they are lost. CGMES 3 moved them into the core equipment profile and keeps them, but two buses go missing on the way back. XIIDM keeps everything, so that is the file GridFM-Datakit gets in Part 2. A CGMES file from an operator, whose limits are currents, goes in the same way.</p>
+</section>
 <section id="a-first-dynawo-simulation" class="level2">
 <h2 class="anchored" data-anchor-id="a-first-dynawo-simulation">A first Dynawo simulation</h2>
 <p><code>pypowsybl.dynamic</code> drives Dynawo with three mappings. <strong>Models</strong> attach a dynamic model to a static element, <strong>events</strong> say what happens and when, and <strong>output variables</strong> say what to record. The physical parameters of each model come from a <code>.par</code> file, referenced by a parameter set ID.</p>
-<div id="933423a8" class="cell" data-execution_count="6">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pypowsybl.dynamic <span class="im">as</span> dyn</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>models_table <span class="op">=</span> pd.read_csv(<span class="st">"../data/ieee14/static_element_dynamic_models.csv"</span>)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>machines <span class="op">=</span> models_table.query(<span class="st">"category_name == 'SynchronousGenerator'"</span>)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>machines</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="5">
+<div id="559a62ea" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pypowsybl.dynamic <span class="im">as</span> dyn</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>models_table <span class="op">=</span> pd.read_csv(<span class="st">"../data/ieee14/static_element_dynamic_models.csv"</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>machines <span class="op">=</span> models_table.query(<span class="st">"category_name == 'SynchronousGenerator'"</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>machines</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
 <div>
 
 
@@ -1102,79 +1245,79 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>The five machines get a synchronous generator model. Loads and other elements keep Dynawo’s default model.</p>
-<div id="93db73f7" class="cell" data-execution_count="7">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>models <span class="op">=</span> dyn.ModelMapping()</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> row <span class="kw">in</span> machines.itertuples():</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    models.add_synchronous_generator(</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>        static_id<span class="op">=</span>row.static_id,</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        parameter_set_id<span class="op">=</span>row.parameter_set_id,</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        model_name<span class="op">=</span>row.model_name,</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="97417c2a" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>models <span class="op">=</span> dyn.ModelMapping()</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> row <span class="kw">in</span> machines.itertuples():</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    models.add_synchronous_generator(</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>        static_id<span class="op">=</span>row.static_id,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>        parameter_set_id<span class="op">=</span>row.parameter_set_id,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>        model_name<span class="op">=</span>row.model_name,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The disturbance is a 100 ms solid fault on bus 4, cleared without tripping anything.</p>
-<div id="02ad2c86" class="cell" data-execution_count="8">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>events <span class="op">=</span> dyn.EventMapping()</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>events.add_node_fault(</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    static_id<span class="op">=</span><span class="st">"_BUS____4_TN"</span>, start_time<span class="op">=</span><span class="fl">1.0</span>, fault_time<span class="op">=</span><span class="fl">0.1</span>, r_pu<span class="op">=</span><span class="fl">0.0</span>, x_pu<span class="op">=</span><span class="fl">0.01</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>outputs <span class="op">=</span> dyn.OutputVariableMapping()</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>outputs.add_standard_model_curves(static_id<span class="op">=</span><span class="st">"_BUS____4_TN"</span>, variables<span class="op">=</span>[<span class="st">"U_value"</span>])</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> gen <span class="kw">in</span> machines.static_id:</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    outputs.add_dynamic_model_curves(</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>        dynamic_model_id<span class="op">=</span>gen, variables<span class="op">=</span>[<span class="st">"generator_omegaPu_value"</span>]</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="cd9caf5d" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>events <span class="op">=</span> dyn.EventMapping()</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>events.add_node_fault(</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    static_id<span class="op">=</span><span class="st">"_BUS____4_TN"</span>, start_time<span class="op">=</span><span class="fl">1.0</span>, fault_time<span class="op">=</span><span class="fl">0.1</span>, r_pu<span class="op">=</span><span class="fl">0.0</span>, x_pu<span class="op">=</span><span class="fl">0.01</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>outputs <span class="op">=</span> dyn.OutputVariableMapping()</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>outputs.add_standard_model_curves(static_id<span class="op">=</span><span class="st">"_BUS____4_TN"</span>, variables<span class="op">=</span>[<span class="st">"U_value"</span>])</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> gen <span class="kw">in</span> machines.static_id:</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    outputs.add_dynamic_model_curves(</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>        dynamic_model_id<span class="op">=</span>gen, variables<span class="op">=</span>[<span class="st">"generator_omegaPu_value"</span>]</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The solver settings live in the same <code>.par</code> file. <code>IDAOrder2</code> is a variable-step solver, fine enough to follow a fault.</p>
-<div id="9d35fadd" class="cell" data-execution_count="9">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>par <span class="op">=</span> <span class="st">"../data/ieee14/IEEE14.par"</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>parameters <span class="op">=</span> dyn.Parameters(</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    start_time<span class="op">=</span><span class="fl">0.0</span>,</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    stop_time<span class="op">=</span><span class="fl">10.0</span>,</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    provider_parameters<span class="op">=</span>{</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"parametersFile"</span>: par,</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"network.parametersFile"</span>: par,</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"network.parametersId"</span>: <span class="st">"Network"</span>,</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"solver.type"</span>: <span class="st">"IDA"</span>,</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">"solver.parametersFile"</span>: par,</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">"solver.parametersId"</span>: <span class="st">"IDAOrder2"</span>,</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    },</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>simulation <span class="op">=</span> dyn.Simulation()</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> simulation.run(network, models, events, outputs, parameters)</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result.status())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="e5687e0b" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>par <span class="op">=</span> <span class="st">"../data/ieee14/IEEE14.par"</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>parameters <span class="op">=</span> dyn.Parameters(</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    start_time<span class="op">=</span><span class="fl">0.0</span>,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    stop_time<span class="op">=</span><span class="fl">10.0</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    provider_parameters<span class="op">=</span>{</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"parametersFile"</span>: par,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"network.parametersFile"</span>: par,</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"network.parametersId"</span>: <span class="st">"Network"</span>,</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"solver.type"</span>: <span class="st">"IDA"</span>,</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">"solver.parametersFile"</span>: par,</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">"solver.parametersId"</span>: <span class="st">"IDAOrder2"</span>,</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>simulation <span class="op">=</span> dyn.Simulation()</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> simulation.run(network, models, events, outputs, parameters)</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result.status())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>DynamicSimulationStatus.SUCCESS</code></pre>
 </div>
 </div>
 <p>The curves come back as one DataFrame indexed by time.</p>
-<div id="2c423696" class="cell" data-execution_count="10">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>curves <span class="op">=</span> result.curves()</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>curves.index <span class="op">=</span> (curves.index <span class="op">-</span> curves.index[<span class="dv">0</span>]).total_seconds()</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>fig, (ax_u, ax_w) <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="dv">4</span>))</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>ax_u.plot(curves.index, curves[<span class="st">"NETWORK__BUS____4_TN_U_value"</span>], color<span class="op">=</span>PALETTE[<span class="dv">0</span>])</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>ax_u.<span class="bu">set</span>(title<span class="op">=</span><span class="st">"Voltage at bus 4"</span>, xlabel<span class="op">=</span><span class="st">"time (s)"</span>, ylabel<span class="op">=</span><span class="st">"kV"</span>)</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, gen <span class="kw">in</span> <span class="bu">enumerate</span>(machines.static_id):</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    ax_w.plot(</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>        curves.index,</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>        curves[<span class="ss">f"</span><span class="sc">{</span>gen<span class="sc">}</span><span class="ss">_generator_omegaPu_value"</span>],</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>        color<span class="op">=</span>PALETTE[i],</span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span>gen.strip(<span class="st">"_"</span>).replace(<span class="st">"____"</span>, <span class="st">" "</span>).replace(<span class="st">"_SM"</span>, <span class="st">""</span>),</span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>ax_w.<span class="bu">set</span>(title<span class="op">=</span><span class="st">"Rotor speed"</span>, xlabel<span class="op">=</span><span class="st">"time (s)"</span>, ylabel<span class="op">=</span><span class="st">"pu"</span>)</span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>ax_w.legend(ncols<span class="op">=</span><span class="dv">2</span>)</span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="1f875e44" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>curves <span class="op">=</span> result.curves()</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>curves.index <span class="op">=</span> (curves.index <span class="op">-</span> curves.index[<span class="dv">0</span>]).total_seconds()</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>fig, (ax_u, ax_w) <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="dv">4</span>))</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>ax_u.plot(curves.index, curves[<span class="st">"NETWORK__BUS____4_TN_U_value"</span>], color<span class="op">=</span>PALETTE[<span class="dv">0</span>])</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>ax_u.<span class="bu">set</span>(title<span class="op">=</span><span class="st">"Voltage at bus 4"</span>, xlabel<span class="op">=</span><span class="st">"time (s)"</span>, ylabel<span class="op">=</span><span class="st">"kV"</span>)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, gen <span class="kw">in</span> <span class="bu">enumerate</span>(machines.static_id):</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    ax_w.plot(</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>        curves.index,</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>        curves[<span class="ss">f"</span><span class="sc">{</span>gen<span class="sc">}</span><span class="ss">_generator_omegaPu_value"</span>],</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>        color<span class="op">=</span>PALETTE[i],</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span>gen.strip(<span class="st">"_"</span>).replace(<span class="st">"____"</span>, <span class="st">" "</span>).replace(<span class="st">"_SM"</span>, <span class="st">""</span>),</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>ax_w.<span class="bu">set</span>(title<span class="op">=</span><span class="st">"Rotor speed"</span>, xlabel<span class="op">=</span><span class="st">"time (s)"</span>, ylabel<span class="op">=</span><span class="st">"pu"</span>)</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>ax_w.legend(ncols<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="01-powsybl-dynawo_files/figure-html/cell-11-output-1.png" width="1199" height="429" class="figure-img"></p>
+<p><img src="01-powsybl-dynawo_files/figure-html/cell-13-output-1.png" width="1199" height="429" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>The fault collapses the voltage at bus 4, the machines accelerate during the fault, then swing back together. This is one trajectory. Parts 3 and 4 produce thousands of them, each from a different operating point and a different disturbance.</p>
+<p>The fault collapses the voltage at bus 4, and the rotor speeds of the machines swing, then settle. This is one trajectory. Parts 3 and 4 produce thousands of them, each from a different operating point and a different disturbance.</p>
 </section>
 <section id="your-turn" class="level2">
 <h2 class="anchored" data-anchor-id="your-turn">Your turn</h2>
@@ -1203,28 +1346,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="d431ec48" class="cell" data-tags="[&quot;solution&quot;]" data-execution_count="11">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>network <span class="op">=</span> pp.network.load(<span class="st">"../data/ieee14/IEEE14.iidm"</span>)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>pp.loadflow.run_ac(network)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>trip <span class="op">=</span> dyn.EventMapping()</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>trip.add_disconnection(static_id<span class="op">=</span><span class="st">"_GEN____2_SM"</span>, start_time<span class="op">=</span><span class="fl">1.0</span>)</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>parameters <span class="op">=</span> dyn.Parameters(</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    start_time<span class="op">=</span><span class="fl">0.0</span>,</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    stop_time<span class="op">=</span><span class="fl">30.0</span>,</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    provider_parameters<span class="op">=</span>parameters.provider_parameters,</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> simulation.run(network, models, trip, outputs, parameters)</span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>curves <span class="op">=</span> result.curves()</span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>curves.index <span class="op">=</span> (curves.index <span class="op">-</span> curves.index[<span class="dv">0</span>]).total_seconds()</span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> curves[<span class="st">"_GEN____1_SM_generator_omegaPu_value"</span>].plot(color<span class="op">=</span>PALETTE[<span class="dv">0</span>])</span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(title<span class="op">=</span><span class="st">"Rotor speed of generator 1 after tripping generator 2"</span>,</span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>       xlabel<span class="op">=</span><span class="st">"time (s)"</span>, ylabel<span class="op">=</span><span class="st">"pu"</span>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="5287ef12" class="cell" data-tags="[&quot;solution&quot;]" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>network <span class="op">=</span> pp.network.load(<span class="st">"../data/ieee14/IEEE14.iidm"</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>pp.loadflow.run_ac(network)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>trip <span class="op">=</span> dyn.EventMapping()</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>trip.add_disconnection(static_id<span class="op">=</span><span class="st">"_GEN____2_SM"</span>, start_time<span class="op">=</span><span class="fl">1.0</span>)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>parameters <span class="op">=</span> dyn.Parameters(</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    start_time<span class="op">=</span><span class="fl">0.0</span>,</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    stop_time<span class="op">=</span><span class="fl">30.0</span>,</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    provider_parameters<span class="op">=</span>parameters.provider_parameters,</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> simulation.run(network, models, trip, outputs, parameters)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>curves <span class="op">=</span> result.curves()</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>curves.index <span class="op">=</span> (curves.index <span class="op">-</span> curves.index[<span class="dv">0</span>]).total_seconds()</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> curves[<span class="st">"_GEN____1_SM_generator_omegaPu_value"</span>].plot(color<span class="op">=</span>PALETTE[<span class="dv">0</span>])</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(title<span class="op">=</span><span class="st">"Rotor speed of generator 1 after tripping generator 2"</span>,</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>       xlabel<span class="op">=</span><span class="st">"time (s)"</span>, ylabel<span class="op">=</span><span class="st">"pu"</span>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="01-powsybl-dynawo_files/figure-html/cell-12-output-1.png" width="870" height="429" class="figure-img"></p>
+<p><img src="01-powsybl-dynawo_files/figure-html/cell-14-output-1.png" width="870" height="429" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -1243,7 +1386,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><a href="./02-steady-state.html">Part 2</a> feeds a real grid through PowSyBl into datakit and builds a steady-state dataset.</p>
+<p><a href="./02-steady-state.html">Part 2</a> feeds the PEGASE grid through PowSyBl into datakit and builds a steady-state dataset.</p>
 </div>
 </div>
 
