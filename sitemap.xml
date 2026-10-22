@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://gfm6w.github.io/04-dynamic-events.html</loc>
-    <lastmod>2026-10-16T10:32:02.397Z</lastmod>
+    <loc>https://gfm6w.github.io/parts/04-dynamic-events.html</loc>
+    <lastmod>2026-10-22T22:37:31.550Z</lastmod>
   </url>
   <url>
-    <loc>https://gfm6w.github.io/02-steady-state.html</loc>
-    <lastmod>2026-10-16T11:11:46.628Z</lastmod>
+    <loc>https://gfm6w.github.io/parts/02-steady-state.html</loc>
+    <lastmod>2026-10-22T22:37:31.550Z</lastmod>
   </url>
   <url>
     <loc>https://gfm6w.github.io/setup.html</loc>
-    <lastmod>2026-10-07T18:59:13.981Z</lastmod>
+    <lastmod>2026-10-22T22:37:31.550Z</lastmod>
   </url>
   <url>
     <loc>https://gfm6w.github.io/index.html</loc>
-    <lastmod>2026-10-16T10:32:02.416Z</lastmod>
+    <lastmod>2026-10-22T22:37:31.549Z</lastmod>
   </url>
   <url>
-    <loc>https://gfm6w.github.io/01-powsybl-dynawo.html</loc>
-    <lastmod>2026-10-16T10:32:02.397Z</lastmod>
+    <loc>https://gfm6w.github.io/parts/01-powsybl-dynawo.html</loc>
+    <lastmod>2026-10-22T22:37:31.549Z</lastmod>
   </url>
   <url>
-    <loc>https://gfm6w.github.io/03-dynamic-initial-state.html</loc>
-    <lastmod>2026-10-16T11:18:19.657Z</lastmod>
+    <loc>https://gfm6w.github.io/parts/03-dynamic-initial-state.html</loc>
+    <lastmod>2026-10-22T22:37:31.550Z</lastmod>
   </url>
 </urlset>

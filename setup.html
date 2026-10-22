@@ -82,7 +82,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-4c11d9c02471666671d1ce5a25028114.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-47f533d445c58ed2fec2571aaf406ec5.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-aae0d6349279c097592ef0dc66f915a4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -111,7 +111,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 <style>html{ scroll-behavior: smooth; }</style>
-<script src="assets/js/svg-pan-zoom.min.js"></script>
 
 
 <link rel="stylesheet" href="theme/fonts.css">
@@ -147,19 +146,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text">Setup</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./01-powsybl-dynawo.html"> 
+    <a class="nav-link" href="./parts/01-powsybl-dynawo.html"> 
 <span class="menu-text">1 · PowSyBl &amp; Dynawo</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./02-steady-state.html"> 
+    <a class="nav-link" href="./parts/02-steady-state.html"> 
 <span class="menu-text">2 · Steady state</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./03-dynamic-initial-state.html"> 
+    <a class="nav-link" href="./parts/03-dynamic-initial-state.html"> 
 <span class="menu-text">3 · Initial states</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./04-dynamic-events.html"> 
+    <a class="nav-link" href="./parts/04-dynamic-events.html"> 
 <span class="menu-text">4 · Dynamic events</span></a>
   </li>  
 </ul>
@@ -208,7 +207,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul class="collapse">
   <li><a href="#codespaces" id="toc-codespaces" class="nav-link active" data-scroll-target="#codespaces">GitHub Codespaces</a></li>
-  <li><a href="#container" id="toc-container" class="nav-link" data-scroll-target="#container">Dev container</a></li>
+  <li><a href="#container" id="toc-container" class="nav-link" data-scroll-target="#container">Container</a></li>
   <li><a href="#local" id="toc-local" class="nav-link" data-scroll-target="#local">Local install</a></li>
   <li><a href="#follow-along-without-installing" id="toc-follow-along-without-installing" class="nav-link" data-scroll-target="#follow-along-without-installing">Follow along without installing</a></li>
   </ul>
@@ -222,7 +221,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <div class="session-strip">
-<p><span class="chip">10 min, before the session</span> <span class="chip">Python 3.10 to 3.12 · Julia · Dynawo 1.7.0</span></p>
+<p><span class="chip">5 to 20 min, before the session</span> <span class="chip">Python 3.10 to 3.12 · Julia · Dynawo 1.7.0</span></p>
 </div>
 <p>The notebooks need three things next to Python. <strong>pypowsybl</strong> comes from pip. <strong>Julia with PowerModels.jl</strong> solves the optimal power flow inside GridFM-Datakit and installs itself on first use. <strong>Dynawo</strong> is a native simulator distributed as a zip archive. Pick the route that suits your machine.</p>
 <table class="caption-top table">
@@ -237,17 +236,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="odd">
 <td><a href="#codespaces">GitHub Codespaces</a></td>
 <td>Any browser</td>
-<td>One click, a few minutes to build</td>
+<td>One click, a few minutes to start</td>
 </tr>
 <tr class="even">
-<td><a href="#container">Dev container</a></td>
+<td><a href="#container">Container</a></td>
 <td>Any OS with Docker</td>
 <td>One command</td>
 </tr>
 <tr class="odd">
 <td><a href="#local">Local install</a></td>
 <td>Linux, Windows through WSL 2</td>
-<td>About ten minutes</td>
+<td>15 to 20 minutes</td>
 </tr>
 </tbody>
 </table>
@@ -261,52 +260,53 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Dynawo ships Linux and Windows builds only. On a Mac, use Codespaces or the dev container.</p>
+<p>Dynawo ships Linux and Windows builds only. On a Mac, use Codespaces or the container.</p>
 </div>
 </div>
 <section id="codespaces" class="level2">
 <h2 class="anchored" data-anchor-id="codespaces">GitHub Codespaces</h2>
-<p>Open the repository in a codespace. The dev container installs Python, Julia, PowerModels and Dynawo, then opens the notebooks.</p>
+<p>Open the repository in a codespace. It starts from a ready-made image with Python, Julia, PowerModels and Dynawo installed, then opens the notebooks.</p>
 <p><a href="https://codespaces.new/gfm6w/tutorial?quickstart=1" class="btn btn-primary">Open in GitHub Codespaces</a></p>
-<p>The first build takes several minutes. Start it before the session.</p>
+<p>Pulling the image takes a few minutes. Start it before the session.</p>
 </section>
 <section id="container" class="level2">
-<h2 class="anchored" data-anchor-id="container">Dev container</h2>
-<p>With Docker and VS Code, clone the repository and choose <strong>Reopen in Container</strong>. Without VS Code, build and run the image directly.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/gfm6w/tutorial.git</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> tutorial</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> build <span class="at">-t</span> gfm6w-tutorial <span class="at">-f</span> .devcontainer/Dockerfile .</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--rm</span> <span class="at">-p</span> 8888:8888 <span class="at">-v</span> <span class="st">"</span><span class="va">$PWD</span><span class="st">"</span>:/workspace gfm6w-tutorial</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Then open the link printed by Jupyter.</p>
+<h2 class="anchored" data-anchor-id="container">Container</h2>
+<p>The image holds the notebooks and every tool they need. Pull and run it, then open the link printed by Jupyter.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--rm</span> <span class="at">-p</span> 8888:8888 ghcr.io/gfm6w/tutorial</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The download is about 2 GB, 5 GB on disk. Work done in the container is lost when it stops, unless you run it on a clone of the repository.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/gfm6w/tutorial.git</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> tutorial</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--rm</span> <span class="at">-p</span> 8888:8888 <span class="at">-v</span> <span class="st">"</span><span class="va">$PWD</span><span class="st">"</span>:/workspace ghcr.io/gfm6w/tutorial</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>With VS Code, open the clone and choose <strong>Reopen in Container</strong>. To build the image yourself, run <code>docker build -t ghcr.io/gfm6w/tutorial -f .devcontainer/Dockerfile .</code> from the clone.</p>
 </section>
 <section id="local" class="level2">
 <h2 class="anchored" data-anchor-id="local">Local install</h2>
 <section id="python-packages" class="level3">
 <h3 class="anchored" data-anchor-id="python-packages">1. Python packages</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/gfm6w/tutorial.git</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> tutorial</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> venv .venv</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> .venv/bin/activate</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">-r</span> requirements.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The requirements pin GridFM-Datakit to the <code>gfm6wt</code> branch, which carries the dynamic event randomization and the PowSyBl reader fixes used here.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/gfm6w/tutorial.git</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> tutorial</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> venv .venv</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> .venv/bin/activate</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">-r</span> requirements.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The requirements pin GridFM-Datakit to a commit of the <code>gfm6wt</code> branch, which carries the dynamic event randomization and the PowSyBl reader fixes used here.</p>
 </section>
 <section id="julia-and-powermodels" class="level3">
 <h3 class="anchored" data-anchor-id="julia-and-powermodels">2. Julia and PowerModels</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gridfm_datakit</span> setup_pm</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>This downloads Julia if needed, then PowerModels.jl and Ipopt. Count a few minutes.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gridfm_datakit</span> setup_pm</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This downloads Julia if needed, then PowerModels.jl and Ipopt, and compiles them. Count about ten minutes.</p>
 </section>
 <section id="dynawo" class="level3">
 <h3 class="anchored" data-anchor-id="dynawo">3. Dynawo</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> scripts/install_dynawo.sh</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> scripts/install_dynawo.sh</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The script downloads Dynawo 1.7.0 into <code>~/dynawo</code> and declares it to PowSyBl in <code>~/.itools/config.yml</code>. To use an existing installation, write that file yourself.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dynawo</span><span class="kw">:</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">homeDir</span><span class="kw">:</span><span class="at"> /path/to/dynawo</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">debug</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dynawo</span><span class="kw">:</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">homeDir</span><span class="kw">:</span><span class="at"> /path/to/dynawo</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">debug</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="check" class="level3">
 <h3 class="anchored" data-anchor-id="check">4. Check</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> scripts/check_setup.py</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">jupyter</span> lab notebooks/</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> scripts/check_setup.py</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">jupyter</span> lab notebooks/</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>check_setup.py</code> prints the versions found and runs a ten-second Dynawo simulation. If it ends with <code>All set</code>, you are ready.</p>
 </section>
 </section>
