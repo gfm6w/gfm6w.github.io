@@ -1216,6 +1216,13 @@ Y (24, 19, 201) (samples, curves, time steps)</code></pre>
 </div>
   </div>
 </footer>
+<script type="module">
+if (document.querySelector(".static-explorer")) {
+  const lib = document.querySelector('script[src*="site_libs/"]');
+  const root = lib.src.slice(0, lib.src.indexOf("site_libs/"));
+  import(root + "assets/js/explorer.js").then((m) => m.mount(root));
+}
+</script>
 
 
 
