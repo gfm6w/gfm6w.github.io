@@ -116,7 +116,7 @@
     "href": "setup.html#codespaces",
     "title": "Setup",
     "section": "GitHub Codespaces",
-    "text": "GitHub Codespaces\nOpen the repository in a codespace. It starts from a ready-made image with Python, Julia, PowerModels and Dynawo installed, then opens the notebooks.\nOpen in GitHub Codespaces\nPulling the image takes a few minutes. Start it before the session. Prefer Google Chrome."
+    "text": "GitHub Codespaces\nOpen the repository in a codespace. It starts from a ready-made image with Python, Julia, PowerModels and Dynawo installed, then opens the notebooks.\nOpen in GitHub Codespaces\nPulling the image takes a few minutes. Start it before the session.\n\n\n\n\n\n\nTipUse Google Chrome\n\n\n\nCodespaces runs best in Chrome. Other browsers may not display everything."
   },
   {
     "objectID": "setup.html#container",
