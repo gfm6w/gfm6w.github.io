@@ -562,21 +562,24 @@ tap 1 solved at 10</code></pre>
 <span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>copies <span class="op">=</span> {</span>
 <span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"MATPOWER source"</span>: grid,</span>
 <span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"CGMES 2.4.15"</span>: pp.network.load(<span class="st">"outputs/part1/pegase89.zip"</span>),</span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"CGMES 3"</span>: pp.network.load(<span class="st">"outputs/part1/pegase89_cgmes3.zip"</span>),</span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">"XIIDM"</span>: pp.network.load(<span class="st">"outputs/part1/pegase89.xiidm"</span>),</span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>pd.DataFrame(</span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    {</span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>        name: [</span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>            <span class="bu">len</span>(n.get_buses()),</span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>            <span class="bu">len</span>(n.get_generators()),</span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>            <span class="bu">len</span>(n.get_branches()),</span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>            <span class="bu">len</span>(n.get_loading_limits()),</span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>        ]</span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> name, n <span class="kw">in</span> copies.items()</span>
-<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>    },</span>
-<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>[<span class="st">"buses"</span>, <span class="st">"generators"</span>, <span class="st">"branches"</span>, <span class="st">"loading limits"</span>],</span>
-<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"CGMES 3"</span>: pp.network.load(</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>        <span class="st">"outputs/part1/pegase89_cgmes3.zip"</span>,</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>        parameters<span class="op">=</span>{<span class="st">"iidm.import.cgmes.import-node-breaker-as-bus-breaker"</span>: <span class="st">"true"</span>},</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">"XIIDM"</span>: pp.network.load(<span class="st">"outputs/part1/pegase89.xiidm"</span>),</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>pd.DataFrame(</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>        name: [</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>            <span class="bu">len</span>(n.get_buses()),</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>            <span class="bu">len</span>(n.get_generators()),</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>            <span class="bu">len</span>(n.get_branches()),</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>            <span class="bu">len</span>(n.get_loading_limits()),</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>        ]</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> name, n <span class="kw">in</span> copies.items()</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>[<span class="st">"buses"</span>, <span class="st">"generators"</span>, <span class="st">"branches"</span>, <span class="st">"loading limits"</span>],</span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="7">
 <div>
 
@@ -596,7 +599,7 @@ tap 1 solved at 10</code></pre>
 <th data-quarto-table-cell-role="th">buses</th>
 <td>89</td>
 <td>89</td>
-<td>87</td>
+<td>89</td>
 <td>89</td>
 </tr>
 <tr class="even">
@@ -626,7 +629,7 @@ tap 1 solved at 10</code></pre>
 </div>
 </div>
 </div>
-<p>A MATPOWER case rates its branches in apparent power. CGMES 2.4.15 holds apparent power limits in its Equipment Operation profile, which PowSyBl does not write for a bus-branch model like this one, so they are lost. CGMES 3 moved them into the core equipment profile and keeps them, but two buses go missing on the way back. XIIDM keeps everything, so that is the file GridFM-Datakit gets in Part 2. A CGMES file from an operator, whose limits are currents, goes in the same way.</p>
+<p>A MATPOWER case rates its branches in apparent power. CGMES 2.4.15 holds apparent power limits in its Equipment Operation profile, which PowSyBl does not write for a bus-branch model like this one, so they are lost. CGMES 3 moved them into the core equipment profile and keeps them. By default its import builds node-breaker voltage levels and leaves two lines open at one end, so the cell imports it as bus-breaker, the topology of the source. XIIDM keeps everything, so that is the file GridFM-Datakit gets in Part 2. A CGMES file from an operator, whose limits are currents, goes in the same way.</p>
 </section>
 <section id="a-first-dynawo-simulation" class="level2">
 <h2 class="anchored" data-anchor-id="a-first-dynawo-simulation">A first Dynawo simulation</h2>
