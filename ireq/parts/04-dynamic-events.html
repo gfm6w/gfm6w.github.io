@@ -82,7 +82,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-4c11d9c02471666671d1ce5a25028114.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-b50445f2a152b04ca38f4030a19bdb18.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-5289e7e245fd57cb5519dd9abedd67e3.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -168,6 +168,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-editions" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+      <i class="bi bi-layers" role="img">
+</i> 
  <span class="menu-text">Editions</span>
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-editions">    
@@ -1375,9 +1377,17 @@ Name: count, dtype: int64</code></pre>
   </div>
 </footer>
 <script type="module">
+const lib = document.querySelector('script[src*="site_libs/"]');
+const root = lib.src.slice(0, lib.src.indexOf("site_libs/"));
+const here = new URL(root).pathname;
+const editions = '[aria-labelledby="nav-menu-editions"] .dropdown-item';
+for (const item of document.querySelectorAll(editions)) {
+  if (new URL(item.href).pathname === here) {
+    item.classList.add("active");
+    item.setAttribute("aria-current", "page");
+  }
+}
 if (document.querySelector(".static-explorer")) {
-  const lib = document.querySelector('script[src*="site_libs/"]');
-  const root = lib.src.slice(0, lib.src.indexOf("site_libs/"));
   import(root + "assets/js/explorer.js").then((m) => m.mount(root));
 }
 </script>
