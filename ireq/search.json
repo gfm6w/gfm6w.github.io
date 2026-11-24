@@ -123,7 +123,7 @@
     "href": "setup.html#container",
     "title": "Setup",
     "section": "Container",
-    "text": "Container\nThe image holds the notebooks and every tool they need. Pull and run it, then open the link printed by Jupyter.\ndocker run --rm -p 8888:8888 ghcr.io/gfm6w/tutorial\nThe download is about 2 GB, 5 GB on disk. Work done in the container is lost when it stops, unless you run it on a clone of the repository.\ngit clone -b tuto_visite_IREQ https://github.com/gfm6w/tutorial.git\ncd tutorial\ndocker run --rm -p 8888:8888 -v \"$PWD\":/workspace ghcr.io/gfm6w/tutorial\nWith VS Code, open the clone and choose Reopen in Container. To build the image yourself, run docker build -t ghcr.io/gfm6w/tutorial -f .devcontainer/Dockerfile . from the clone."
+    "text": "Container\nThe image holds the notebooks and every tool they need. Pull and run it, then open the link printed by Jupyter.\ndocker run --rm -p 8888:8888 ghcr.io/gfm6w/tutorial:ireq\nThe download is about 2 GB, 5 GB on disk. Work done in the container is lost when it stops, unless you run it on a clone of the repository.\ngit clone -b tuto_visite_IREQ https://github.com/gfm6w/tutorial.git\ncd tutorial\ndocker run --rm -p 8888:8888 -v \"$PWD\":/workspace ghcr.io/gfm6w/tutorial:ireq\nWith VS Code, open the clone and choose Reopen in Container. To build the image yourself, run docker build -t ghcr.io/gfm6w/tutorial:ireq -f .devcontainer/Dockerfile . from the clone."
   },
   {
     "objectID": "setup.html#local",
